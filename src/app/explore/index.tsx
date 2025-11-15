@@ -25,7 +25,7 @@ export default function Explore() {
                     <div className={`fixed top-20 border border-gray-40 p-2 left-0 z-90 rounded-md ${isChatSidebar ? 'bg-primary text-background' : 'bg-background'}`} onClick={() => setIsChatSidebar(!isChatSidebar)}>
                         <BsChatDots size={24} />
                     </div>
-                    <div className={`bg-background border-r border-dashed border-gray-40 z-50 max-w-[80%] fixed left-0 md:h-[calc(100vh-100px)] transitoin-all duration-500 ${isChatSidebar ? 'translate-x-0' : '-translate-x-full'}`}>
+                    <div className={`bg-background border-r border-dashed border-gray-40 z-50 max-w-[80%] fixed left-0 top-0 md:h-[calc(100vh-100px)] transitoin-all duration-500 ${isChatSidebar ? 'translate-x-0' : '-translate-x-full'}`}>
                         <Chat />
                     </div>
                 </div>
