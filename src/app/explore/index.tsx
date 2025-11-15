@@ -11,7 +11,7 @@ export default function Explore() {
     const [isChatSidebar, setIsChatSidebar] = useState(false)
     return (
         // <div className="grid grid-cols-4 gap-15 pe-4 mt-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-15 pe-4 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-0 md:gap-15 pe-4 mt-6 px-4">
             <div className="col-span-1 md:h-[calc(100vh-100px)] overflow-y-auto scrollbar-hide">
                 {/* <Chat /> */}
 
@@ -30,10 +30,10 @@ export default function Explore() {
                     </div>
                 </div>
             </div>
-            <div className="col-span-2 h-[calc(100vh-100px)] pb-4 overflow-y-auto scrollbar-hide -mt-10 md:mt-0">
+            <div className="col-span-2 md:h-[calc(100vh-100px)] pb-4 overflow-y-auto scrollbar-hide">
                 <Grid />
             </div>
-            <div className="col-span-1 h-[calc(100vh-100px)] overflow-y-auto scrollbar-hide">
+            <div className="col-span-1 md:h-[calc(100vh-100px)] overflow-y-auto scrollbar-hide">
                 <Winners />
             </div>
         </div>

@@ -115,8 +115,8 @@ export default function Grid() {
                             }
                             onClick={() => toggleSelected(i)}
                         >
-                            <BorderEdges key={i} padding={3} cornerThickness={8} cornerColor={`${edgesColor}`} cornerSize={1} className="w-full">
-                                <div className={`p-2 border cursor-pointer text-center space-y-2.5 ${bgColor} ${borderColor}`}>
+                            <BorderEdges key={i} padding={2} cornerThickness={8} cornerColor={`${edgesColor}`} cornerSize={1} className="w-full">
+                                <div className={`p-1 md:p-2 border cursor-pointer text-center space-y-2.5 ${bgColor} ${borderColor}`}>
                                     <P14 className="text-dark-gray hidden md:block font-normal">#{i + 1}</P14>
                                     {/* <H3 className="font-bold">{amounts[i]}</H3> */}
                                     <H3 className="font-bold">{total >= 1000 ? `${(total / 1000).toFixed(2)} K` : `${total.toFixed(2)}`}</H3>
