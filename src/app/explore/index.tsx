@@ -13,11 +13,28 @@ export default function Explore() {
         // <div className="grid grid-cols-4 gap-15 pe-4 mt-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-0 md:gap-15 pe-4 mt-6 px-4">
             <div className="col-span-1 md:h-[calc(100vh-100px)] overflow-y-auto scrollbar-hide">
-                {/* <Chat /> */}
 
                 {/* desktop chat */}
-                <div className="col-span-1 h-[calc(100vh-150px)] hidden lg:block">
-                    <Chat />
+                <div className="col-span-1 h-[calc(100vh-150px)] hidden lg:block relative">
+                    <div
+                        className={`absolute top-0 left-0 bg-foreground rounded p-2 text-background
+                            ${isChatSidebar ? 'hidden' : 'block'}`}
+                        onClick={() => setIsChatSidebar(!isChatSidebar)}
+                    >
+                        <BsChatDots size={16} />
+                    </div>
+
+                    <div
+                        className={`absolute z-90 top-0 right-0 bg-foreground rounded-l p-2 py-3 text-background
+                        ${isChatSidebar ? 'block' : 'hidden'}`}
+                        onClick={() => setIsChatSidebar(!isChatSidebar)}
+                    >
+                        <MdKeyboardDoubleArrowLeft size={16} />
+                    </div>
+                    <div className={`border-r border-dashed border-gray-40 left-0 top-0 transitoin-all duration-500 
+                        ${isChatSidebar ? 'translate-x-0' : '-translate-x-full'}`}>
+                        <Chat />
+                    </div>
                 </div>
 
                 {/* modile Chat */}

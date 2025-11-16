@@ -104,7 +104,7 @@ export default function Grid() {
                             animate={
                                 isEnded
                                     ? isWinner
-                                        ? { opacity: 1, scale: 1.05 }
+                                        ? { opacity: 1, scale: 1 }
                                         : { opacity: 0, scale: 0.8 }
                                     : { opacity: 1, scale: 1 }
                             }

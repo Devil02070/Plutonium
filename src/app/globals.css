@@ -45,6 +45,7 @@
   --color-primary: var(--primary);
   --color-primary-dark: var(--primary-dark);
   --color-gray-10: var(--gray-10);
+  --color-gray-20: var(--gray-20);
   --color-gray-30: var(--gray-30);
   --color-gray-40: var(--gray-40);
   --color-gray-60: var(--gray-60);
@@ -98,18 +99,13 @@
   --primary: #1297F5;
   --primary-dark: #020F18;
 
-  --gray-10: #ffffff;
-  /* 2% */
-  --gray-30: #FFFFFF1A;
-  /* 10% */
-  --gray-40: #FFFFFF33;
-  /* 20% */
-  --gray-60: #FFFFFF80;
-  /* 50% */
-  --gray-70: #FFFFFF99;
-  /* 60% */
-  --gray-80: #FFFFFFCC;
-  /* 80% */
+  --gray-10: #ffffff;   /* 2% */
+  --gray-20: #FFFFFF0A; /* 4% */
+  --gray-30: #FFFFFF1A; /* 10% */
+  --gray-40: #FFFFFF33; /* 20% */
+  --gray-60: #FFFFFF80; /* 50% */
+  --gray-70: #FFFFFF99; /* 60% */
+  --gray-80: #FFFFFFCC; /* 80% */
 
   --base-green: #A2F512;
   --light-green: #A2F5121A;
