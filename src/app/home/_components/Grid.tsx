@@ -117,7 +117,8 @@ export default function Grid() {
                         >
                             <BorderEdges key={i} padding={2} cornerThickness={6} cornerColor={`${edgesColor}`} cornerSize={1} className="w-full">
                                 <div className={`p-1 md:p-2 border cursor-pointer text-center space-y-2.5 ${bgColor} ${borderColor}`}>
-                                    <P14 className="text-dark-gray hidden md:block font-normal">#{i + 1}</P14>
+                                    <P14 className="text-dark-gray font-normal hidden md:block">#{i + 1}</P14>
+                                    <P12 className="text-dark-gray font-normal md:hidden">#{i + 1}</P12>
                                     {/* <H3 className="font-bold">{amounts[i]}</H3> */}
                                     <H3 className="font-bold">{total >= 1000 ? `${(total / 1000).toFixed(2)} K` : `${total.toFixed(2)}`}</H3>
                                     <P12 className={`flex items-center font-medium mx-auto w-fit gap-2 p-1 rounded-sm bg-gray-30 text-gray-80`}>

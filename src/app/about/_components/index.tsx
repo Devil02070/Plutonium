@@ -1,6 +1,6 @@
 'use client'
 import BorderEdges from "@/components/BorderEdges";
-import { H1, P14 } from "@/components/typography";
+import { P14 } from "@/components/typography";
 import Image from "next/image";
 import { useState } from "react";
 import { RxArrowLeft, RxArrowRight } from "react-icons/rx";
@@ -30,7 +30,7 @@ export default function Body() {
                     {currentTab === 6 && <Links />}
 
                     {/* navigation */}
-                    <div className="flex items-center gap-4 justify-between py-2 mt-10">
+                    <div className="flex items-center gap-4 justify-between py-2 mt-10 relative z-90">
                         {
                             currentTab > 0 ?
                                 <P14 className="flex items-center gap-1 cursor-pointer hover:text-primary" onClick={() => setCurrentTab(currentTab - 1)}><RxArrowLeft size={14} />{tabs[currentTab - 1]}</P14>

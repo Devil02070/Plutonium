@@ -8,7 +8,7 @@ import Grid from "./_components/Grid"
 import Winners from "./_components/Winners"
 
 export default function HomePage() {
-    const [isChatSidebar, setIsChatSidebar] = useState(true)
+    const [isChatSidebar, setIsChatSidebar] = useState(false)
     return (
         // <div className="grid grid-cols-4 gap-15 pe-4 mt-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-0 md:gap-15 pe-4 pb-14 md:pb-0 mt-6 px-4">

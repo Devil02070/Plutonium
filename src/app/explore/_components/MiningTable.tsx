@@ -46,19 +46,19 @@ export default function MiningTable() {
                                         <P12>{(23234).toLocaleString()}</P12>
                                     </TableCell>
                                     <TableCell>
-                                        <div className="flex items-center gap-2 justify-center">
+                                        <div className="flex items-center gap-1 justify-center px-2">
                                             <Image src="/media/token.svg" alt="logo" height={16} width={16} className="rounded-full" />
                                             <P12 className="font-bold">8034.34</P12>
                                         </div>
                                     </TableCell>
                                     <TableCell>
-                                        <div className="flex items-center gap-2 justify-center">
+                                        <div className="flex items-center gap-1 justify-center px-2">
                                             <Image src="/media/token.svg" alt="logo" height={16} width={16} className="rounded-full" />
                                             <P12 className="font-bold">8034.34</P12>
                                         </div>
                                     </TableCell>
                                     <TableCell>
-                                        <div className="flex items-center gap-2 justify-center">
+                                        <div className="flex items-center gap-1 justify-center px-2">
                                             <Image src="/media/token.svg" alt="logo" height={16} width={16} className="rounded-full" />
                                             <P12 className="font-bold">8034.34</P12>
                                         </div>

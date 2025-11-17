@@ -37,19 +37,19 @@ export default function BuybackTable() {
                                         <P12> {dayjs.unix(1763351967).fromNow()}</P12>
                                     </TableCell>
                                     <TableCell>
-                                        <div className="flex items-center gap-2 justify-center">
+                                        <div className="flex items-center gap-1 justify-center px-2">
                                             <Image src="/media/token.svg" alt="logo" height={16} width={16} className="rounded-full" />
                                             <P12 className="font-bold">8034.34</P12>
                                         </div>
                                     </TableCell>
                                     <TableCell>
-                                        <div className="flex items-center gap-2 justify-center">
+                                        <div className="flex items-center gap-1 justify-center px-2">
                                             <Image src="/media/Vector.svg" alt="logo" height={20} width={20} className="rounded-full" />
                                             <P12 className="font-bold">80.34</P12>
                                         </div>
                                     </TableCell>
                                     <TableCell>
-                                        <div className="flex items-center gap-2 justify-end">
+                                        <div className="flex items-center gap-1 justify-end">
                                             <Image src="/media/Vector.svg" alt="logo" height={20} width={20} className="rounded-full" />
                                             <P12 className="font-bold">80.34</P12>
                                         </div>

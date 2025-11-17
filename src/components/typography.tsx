@@ -34,7 +34,7 @@ const Typography = forwardRef<TypographyElement, TypographyProps>(
             h3: "text-[14px]  lg:text-[20px] leading-[14px] lg:leading-[20px] font-manrope",
 
             p16: "text-[12px] md:text-[16px] leading-[16px] font-manrope",
-            p14: "text-[10px] md:text-[14px] leading-[14px] font-manrope",
+            p14: "text-[12px] md:text-[14px] leading-[14px] font-manrope",
             p12: "text-[10px] md:text-[12px] leading-[12px] font-manrope",
         }
 

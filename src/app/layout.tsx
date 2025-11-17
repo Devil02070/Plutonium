@@ -3,6 +3,7 @@ import { Manrope } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 import { Toaster } from "sonner";
+import { AppKitProvider } from "@/context/AppkitProvider";
 
 const font = Manrope({
   variable: "--font-manrope",
@@ -23,9 +24,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${font.variable} antialiased`}>
-        <Header />
-        {children}
-        <Toaster />
+        <AppKitProvider>
+          <Header />
+          {children}
+          <Toaster />
+        </AppKitProvider>
       </body>
     </html>
   );

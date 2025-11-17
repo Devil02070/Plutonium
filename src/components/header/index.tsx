@@ -10,6 +10,7 @@ import { GoHome } from "react-icons/go";
 import { MdOutlineExplore } from "react-icons/md";
 import { BiCoinStack } from "react-icons/bi";
 import { FiBox } from "react-icons/fi";
+import WalletButton from "./WalletButton"
 
 
 
@@ -65,10 +66,7 @@ export default function Header() {
                 </nav>
                 <div className="flex items-center gap-4">
                     <Button variant="outline" className="border-primary hidden md:flex">Buy PLT</Button>
-                    <BorderEdges padding={3} cornerColor="#1297F5" cornerThickness={1}>
-                        <Button>Connect <MdOutlineWallet size={16} />
-                        </Button>
-                    </BorderEdges>
+                    <WalletButton />
                 </div>
 
                 <MobileMenu />
