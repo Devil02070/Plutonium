@@ -6,10 +6,10 @@ import { MdOutlineWallet } from "react-icons/md";
 
 import { BrowserProvider, JsonRpcSigner } from "ethers";
 import { BackendUrl } from "@/utils/env";
+import { shortenAddress } from "@/lib/utils";
 
 export default function WalletButton() {
     const { open } = useAppKit();
-
 
     const { address, isConnected } = useAppKitAccount();
     // Get the current chain ID
@@ -73,12 +73,20 @@ export default function WalletButton() {
     };
     return (
         <>
-            <BorderEdges padding={3} cornerColor="#1297F5" cornerThickness={1}>
-                <Button onClick={() => open()} className="cursor-pointer">Connect <MdOutlineWallet size={16} />
-                </Button>
-            </BorderEdges>
+            {
+                isConnected && address ?
+                    <BorderEdges padding={3} cornerColor="#1297F5" cornerThickness={1}>
+                        <Button onClick={() => open()} className="cursor-pointer">{shortenAddress(address)}
+                        </Button>
+                    </BorderEdges>
+                    :
+                    <BorderEdges padding={3} cornerColor="#1297F5" cornerThickness={1}>
+                        <Button onClick={() => open()} className="cursor-pointer">Connect <MdOutlineWallet size={16} />
+                        </Button>
+                    </BorderEdges>
+            }
             {isConnected &&
-                <Button onClick={handleSignMsg}>Sign Message</Button>
+                <Button onClick={handleSignMsg} variant="outline" className="border-primary">Sign</Button>
             }
         </>
         //     <button onClick={() => open({ view: "Networks" })}>

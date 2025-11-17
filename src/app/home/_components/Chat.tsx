@@ -1,14 +1,13 @@
 'use client'
 import { P12, P16 } from "@/components/typography";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { IoSendOutline } from "react-icons/io5";
 
 export default function Chat() {
     return (
-        <div className="p-4 relative border-r border-dashed border-gray-30 h-[calc(100vh-80px)] md:h-[calc(100vh-120px)]">
+        <div className="p-4 relative border-r border-dashed border-gray-30 h-[calc(100vh-60px)] md:h-[calc(100vh-135px)]">
             {
-                <div className="h-full overflow-y-auto scrollbar-hide space-y-4">
+                <div className="h-full overflow-y-auto scrollbar-hide space-y-4 pb-12">
                     {
                         Array.from({ length: 20 }).map((_, i) => {
                             return (
