@@ -115,7 +115,7 @@ export default function Grid() {
                             }
                             onClick={() => toggleSelected(i)}
                         >
-                            <BorderEdges key={i} padding={2} cornerThickness={8} cornerColor={`${edgesColor}`} cornerSize={1} className="w-full">
+                            <BorderEdges key={i} padding={2} cornerThickness={6} cornerColor={`${edgesColor}`} cornerSize={1} className="w-full">
                                 <div className={`p-1 md:p-2 border cursor-pointer text-center space-y-2.5 ${bgColor} ${borderColor}`}>
                                     <P14 className="text-dark-gray hidden md:block font-normal">#{i + 1}</P14>
                                     {/* <H3 className="font-bold">{amounts[i]}</H3> */}
@@ -157,8 +157,8 @@ export default function Grid() {
                         >Deposit</Button>
                     </BorderEdges>
                 </div>
-                <div className="grid grid-cols-7 gap-4 w-full">
-                    {["5000", "10000", "50000", "100000", '150000', '200000', '250000'].map((val) => (
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-4 w-full">
+                    {["5000", "10000", "50000", "100000", '150000', '200000'].map((val) => (
                         <Button
                             key={val}
                             variant="outline"

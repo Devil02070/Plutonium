@@ -5,7 +5,6 @@ import { useState } from "react";
 import { IoSendOutline } from "react-icons/io5";
 
 export default function Chat() {
-    const [isChatSidebar, setIsChatSidebar] = useState(false)
     return (
         <div className="p-4 relative border-r border-dashed border-gray-30 h-[calc(100vh-80px)] md:h-[calc(100vh-120px)]">
             {

@@ -1,7 +1,7 @@
-import Explore from "./explore";
+import HomePage from "./home";
 
 export default function Home() {
   return (
-    <Explore />
+    <HomePage />
   );
 }

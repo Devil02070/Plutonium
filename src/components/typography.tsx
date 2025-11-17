@@ -29,7 +29,7 @@ const Typography = forwardRef<TypographyElement, TypographyProps>(
         }
 
         const variants: Record<TypographyTag, string> = {
-            h1: "text-[22px]  lg:text-[28px] leading-[22px] lg:leading-[28px] font-manrope",
+            h1: "text-[22px]  lg:text-[28px] leading-[22px] lg:leading-[28px] font-manrope font-bold",
             h2: "text-[18px]  lg:text-[24px] leading-[18px] lg:leading-[24px] font-manrope",
             h3: "text-[14px]  lg:text-[20px] leading-[14px] lg:leading-[20px] font-manrope",
 

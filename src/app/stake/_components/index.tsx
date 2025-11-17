@@ -12,7 +12,7 @@ export default function Body() {
     const [active, setActive] = useState<'stake' | 'unstake'>('stake')
     return (
         <section
-            className="py-10 px-4 bg-no-repeat bg-center"
+            className="px-4 bg-no-repeat bg-center"
             style={{ backgroundImage: 'url("/media/stake-bg.svg")' }}
         >
             <div className="w-full max-w-md mx-auto space-y-4">
