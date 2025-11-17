@@ -2,7 +2,7 @@
 
 import { createAppKit } from "@reown/appkit/react";
 import { EthersAdapter } from "@reown/appkit-adapter-ethers";
-import { mainnet, arbitrum, monadTestnet, bscTestnet } from "@reown/appkit/networks";
+import { monadTestnet, bscTestnet } from "@reown/appkit/networks";
 import { ProjectId } from "@/utils/env";
 
 // 1. Get projectId at https://dashboard.reown.com

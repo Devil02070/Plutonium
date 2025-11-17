@@ -1,48 +1,11 @@
 'use client'
-import Image from "next/image"
 import Link from "next/link"
 import { Button } from "../ui/button"
-import BorderEdges from "../BorderEdges"
-import { MdOutlineWallet } from "react-icons/md"
 import { usePathname } from "next/navigation"
-
-import { GoHome } from "react-icons/go";
-import { MdOutlineExplore } from "react-icons/md";
-import { BiCoinStack } from "react-icons/bi";
-import { FiBox } from "react-icons/fi";
 import WalletButton from "./WalletButton"
-
-
-
-
-
-const navitems = [
-    {
-        title: "Home",
-        url: '/',
-        icon: GoHome,
-        hideMobile: false,
-    },
-    {
-        title: "Explore",
-        url: '/explore',
-        icon: MdOutlineExplore,
-        hideMobile: false,
-    },
-    {
-        title: "Stake",
-        url: '/stake',
-        icon: BiCoinStack,
-        hideMobile: false,
-    },
-    {
-        title: "About",
-        url: '/about',
-        icon: FiBox,
-        hideMobile: true,
-    },
-
-]
+import { navitems } from "@/utils/constants"
+import { FiBox } from "react-icons/fi"
+import Logo from "./Logo"
 
 export default function Header() {
     const pathname = usePathname()
@@ -99,23 +62,6 @@ const MobileMenu = () => {
                     </Link>
                 </ul>
             </nav>
-        </>
-    )
-}
-
-export const Logo = () => {
-    return (
-        <>
-
-            <Link href="/" className="hidden md:block">
-                <Image src="/media/Logo-main.svg" alt="logo" height={72} width={237} className="hidden md:block" />
-            </Link>
-
-            <Link href="/" className="md:hidden">
-                <Image src="/media/logo-icon.svg" alt="logo" height={64} width={64} />
-            </Link>
-
-
         </>
     )
 }
