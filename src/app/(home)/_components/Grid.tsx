@@ -43,6 +43,11 @@ export default function Grid() {
     }
 
     useEffect(() => {
+        const selectedBoxes = selectedIndexes.length;
+        setTotalAmount(selectedBoxes * Number(amount))
+    }, [amount, selectedIndexes])
+
+    useEffect(() => {
         const users = Array.from({ length: 25 }, () => Math.floor(Math.random() * 500));
         const amounts = Array.from({ length: 25 }, () =>
             (Math.random() * 9000 + 100).toFixed(2)
@@ -95,9 +100,9 @@ export default function Grid() {
                     const borderColor = isWinner && showWinner ? 'border-light-green' : isDepositedSelected ? 'border-white' : hasAmount ? 'border-primary-light' : isSelected ? 'border-white' : 'border-gray-40'
                     const bgColor = isWinner && showWinner ? 'bg-dark-green' : isDepositedSelected ? 'bg-background' : hasAmount ? 'bg-primary-dark' : isSelected ? 'bg-background' : 'bg-black-2'
 
-                    const total = Number(amounts[i])
+                    const total = Number(amounts[i]) ? Number(amounts[i]) : 0
+                    const formattedNumber = (total >= 1000) ? `${(total / 1000).toFixed(2)} K` : `${total.toFixed(2)}`;
                     return (
-                        // <div key={i} onClick={() => toggleSelected(i)} className="w-full relative">
                         <motion.div
                             key={i}
                             initial={{ opacity: 1, scale: 1 }}
@@ -119,8 +124,7 @@ export default function Grid() {
                                 <div className={`p-1 md:p-2 border cursor-pointer text-center space-y-2.5 ${bgColor} ${borderColor}`}>
                                     <P14 className="text-dark-gray font-normal hidden md:block">#{i + 1}</P14>
                                     <P12 className="text-dark-gray font-normal md:hidden">#{i + 1}</P12>
-                                    {/* <H3 className="font-bold">{amounts[i]}</H3> */}
-                                    <H3 className="font-bold">{total >= 1000 ? `${(total / 1000).toFixed(2)} K` : `${total.toFixed(2)}`}</H3>
+                                    <H3 className="font-bold">{formattedNumber}</H3>
                                     <P12 className={`flex items-center font-medium mx-auto w-fit gap-2 p-1 rounded-sm bg-gray-30 text-gray-80`}>
                                         <LuUserRound size={12} /> {users[i]}
                                     </P12>
