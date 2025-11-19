@@ -14,7 +14,7 @@ export default function GridStats(){
                         <div className="p-2 space-y-2.5 text-center">
                             <P12 className="text-gray-70 font-medium">Max Supply</P12>
                             <div className="flex items-center gap-2 justify-center">
-                                <Image src="/media/Vector.svg" alt="logo" height={20} width={20} className="rounded-full" />
+                                <Image src="/media/logo-icon.svg" alt="logo" height={20} width={20} className="rounded-full" />
                                 <P16 className="font-bold">80.34</P16>
                             </div>
                         </div>
@@ -23,7 +23,7 @@ export default function GridStats(){
                         <div className="p-2 space-y-2.5 text-center">
                             <P12 className="text-gray-70 font-medium">Circulating Supply</P12>
                             <div className="flex items-center gap-2 justify-center">
-                                <Image src="/media/Vector.svg" alt="logo" height={20} width={20} className="rounded-full" />
+                                <Image src="/media/logo-icon.svg" alt="logo" height={20} width={20} className="rounded-full" />
                                 <P16 className="font-bold">80.34</P16>
                             </div>
                         </div>
@@ -31,7 +31,7 @@ export default function GridStats(){
                     <div className="p-2 space-y-2.5 text-center">
                         <P12 className="text-gray-70 font-medium">Buried (7d)</P12>
                         <div className="flex items-center gap-2 justify-center">
-                            <Image src="/media/Vector.svg" alt="logo" height={20} width={20} className="rounded-full" />
+                            <Image src="/media/logo-icon.svg" alt="logo" height={20} width={20} className="rounded-full" />
                             <P16 className="font-bold">80.34</P16>
                         </div>
                     </div>

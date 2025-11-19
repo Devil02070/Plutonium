@@ -64,14 +64,14 @@ export default function StakeStats() {
             <div className="flex items-center justify-between">
                 <P12 className="text-gray-70 flex items-center gap-2">Total Staked <AiOutlineQuestionCircle size={14} /></P12>
                 <div className="flex items-center gap-2 justify-center">
-                    <Image src="/media/Vector.svg" alt="logo" height={16} width={16} className="rounded-full" />
+                    <Image src="/media/logo-icon.svg" alt="logo" height={16} width={16} className="rounded-full" />
                     <P16 className="font-bold">{(342323.6).toLocaleString()}</P16>
                 </div>
             </div>
             <div className="flex items-center justify-between">
                 <P12 className="text-gray-70 flex items-center gap-2">Your Stakes <AiOutlineQuestionCircle size={14} /></P12>
                 <div className="flex items-center gap-2 justify-center">
-                    <Image src="/media/Vector.svg" alt="logo" height={16} width={16} className="rounded-full" />
+                    <Image src="/media/logo-icon.svg" alt="logo" height={16} width={16} className="rounded-full" />
                     <P16 className="font-bold">{(83.3).toLocaleString()}</P16>
                 </div>
             </div>

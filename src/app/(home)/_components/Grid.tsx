@@ -196,9 +196,9 @@ const RoundStats = ({ timer }: { timer: number }) => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-13 text-center w-full border-[1.5px] border-gray-40 p-2">
             <BorderEdges cornerColor="#6E54FF" cornerThickness={2}>
                 <div className="p-2 space-y-2.5 text-center">
-                    <P12 className="text-gray-70 font-medium">Loot Collection</P12>
+                    <P12 className="text-gray-70 font-medium">Powerhouse</P12>
                     <div className="flex items-center gap-2 justify-center">
-                        <Image src="/media/Vector.svg" alt="logo" height={20} width={20} className="rounded-full" />
+                        <Image src="/media/logo-icon.svg" alt="logo" height={20} width={20} className="rounded-full" />
                         <P16 className="font-bold">80.34</P16>
                     </div>
                 </div>

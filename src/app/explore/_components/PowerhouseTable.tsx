@@ -66,7 +66,7 @@ export default function PowerhouseTable() {
                                     </TableCell>
                                     <TableCell className="text-center">
                                         <div className="flex items-center gap-1 justify-center px-2">
-                                            <Image src="/media/Vector.svg" alt="logo" height={20} width={20} className="rounded-full" />
+                                            <Image src="/media/logo-icon.svg" alt="logo" height={20} width={20} className="rounded-full" />
                                             <P12 className="font-bold">80.34</P12>
                                         </div>
                                     </TableCell>

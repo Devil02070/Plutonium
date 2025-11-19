@@ -35,7 +35,7 @@ export default function Stake() {
                     <div className="bg-gray-30 p-3.25">
                         <div className="flex items-center justify-between gap-2">
                             <div className="bg-primary-dark rounded flex items-center gap-1 justify-center p-1">
-                                <Image src="/media/Vector.svg" alt="logo" height={16} width={16} className="rounded-full" />
+                                <Image src="/media/logo-icon.svg" alt="logo" height={16} width={16} className="rounded-full" />
                                 <P14 className="font-bold">log</P14>
                             </div>
                             <div className="flex items-center gap-2 justify-center">
