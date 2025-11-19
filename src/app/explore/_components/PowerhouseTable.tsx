@@ -1,5 +1,5 @@
 'use client'
-import { H1, H2, P12, P14, P16 } from "@/components/typography";
+import { H1, H2, P12, P14 } from "@/components/typography";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { shortenAddress } from "@/lib/utils";
 import Image from "next/image";

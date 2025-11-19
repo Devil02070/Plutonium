@@ -14,16 +14,8 @@ import { ethers, parseEther } from "ethers";
 import { socket } from "@/utils/socket-io-client";
 import { Spinner } from "@/components/ui/spinner";
 import RoundStats from "./RoundStats";
+import { EventData } from "@/utils/types";
 
-export interface EventData {
-    block: number,
-    users: string[],
-    amounts: number[],
-    plt: number[],
-    one_plt_winner?: string,
-    powerhouse: number[],
-    one_plt_winner_amt: number,
-}
 export default function Grid() {
     const { readContract, getWriteContract } = useContract();
     const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
@@ -141,7 +133,7 @@ export default function Grid() {
         if (endTimestamp && currentTimestamp) {
             const remaining_ts = Number(endTimestamp) - currentTimestamp;
             console.log(Number(endTimestamp), currentTimestamp);
-            // console.log('Remaining time:', remaining_ts);
+            console.log('Remaining time:', remaining_ts);
 
             if (remaining_ts > 0) {
                 setIsEnded(false);
@@ -162,9 +154,6 @@ export default function Grid() {
 
     useEffect(() => {
         if (timer === 0 && gameEndData && winningIndex === null) {
-            // const randomWinner = Math.floor(Math.random() * 25);
-            // setWinningIndex(randomWinner);
-            // setIsEnded(true);
             const winnerBlock = gameEndData[0]?.block;
             // console.log('winning Block', winnerBlock)
             setWinningIndex(winnerBlock);
@@ -220,18 +209,7 @@ export default function Grid() {
         }
     }, [gameStatus])
 
-    // useEffect(() => {
-    //     if (!gameStatus) return;
-
-    //     const interval = setInterval(() => {
-    //         getCurrentTimestamp();
-    //     }, 5000);
-
-    //     return () => clearInterval(interval);
-    // }, [gameStatus]);
-
     useEffect(() => {
-        // getPowerhouseBalance();
         getCurrentTimestamp();
         getEndTimestamp()
         getGameStatus()
@@ -278,7 +256,6 @@ export default function Grid() {
 
                     const total = Number(amounts[i]) ? Number(amounts[i]) : 0
                     const formatted  = total ? ethers.formatEther(total) : 0;
-                    // const formattedNumber = (total >= 1000) ? `${(total / 1000).toFixed(2)} K` : `${total.toFixed(2)}`;
                     return (
                         <motion.div
                             key={i}
@@ -301,7 +278,6 @@ export default function Grid() {
                                 <div className={`p-1 md:p-2 border cursor-pointer text-center space-y-2.5 ${bgColor} ${borderColor}`}>
                                     <P14 className="text-dark-gray font-normal hidden md:block">#{i + 1}</P14>
                                     <P12 className="text-dark-gray font-normal md:hidden">#{i + 1}</P12>
-                                    {/* <H3 className="font-bold">{(Number(formattedNumber) > 0) ? ethers.formatEther(formattedNumber) : 0}</H3> */}
                                     <H3 className="font-bold">{formatTinyEth(Number(formatted))}</H3>
                                     <P12 className={`flex items-center font-medium mx-auto w-fit gap-2 p-1 rounded-sm bg-gray-30 text-gray-80`}>
                                         <LuUserRound size={12} /> {users[i]}

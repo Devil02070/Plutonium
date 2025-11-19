@@ -3,10 +3,10 @@ import { H1, P12 } from "@/components/typography";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { EventData } from "./Grid";
 import { socket } from "@/utils/socket-io-client";
 import { formatTinyEth, shortenAddress } from "@/lib/utils";
 import { ethers } from "ethers";
+import { EventData } from "@/utils/types";
 
 export default function Winners() {
     const [gameEndData, setGameEndData] = useState<EventData[]>()

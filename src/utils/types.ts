@@ -9,6 +9,16 @@ export interface ChatData {
     }
 }
 
+export interface EventData {
+    block: number,
+    users: string[],
+    amounts: number[],
+    plt: number[],
+    one_plt_winner?: string,
+    powerhouse: number[],
+    one_plt_winner_amt: number,
+}
+
 export interface MiningData {
     id: number,
     win_idx: number,
@@ -21,16 +31,3 @@ export interface MiningData {
     powerhouse: number,
     ts: number
 }
-
-// export interface PowerhouseData{
-//      id: number,
-//     win_idx: number,
-//     winners_count: number,
-//     is_plt_split: boolean,
-//     plt_winner_addr: string | null,
-//     deposit: number,
-//     vaulted: number,
-//     winnings: number,
-//     powerhouse: number,
-//     ts: number
-// }

@@ -10,22 +10,14 @@ import Chat from "./Chat";
 import Grid from "./Grid";
 import Winners from "./Winners";
 
-import ABI from "@/abi/read.json";
-import { useAppKitAccount, useAppKitProvider, type Provider } from "@reown/appkit/react";
-import useContract from "@/hooks/useContract";
-import { ethers } from "ethers";
-import { toast } from "sonner";
-
 export default function HomePage() {
-    const [isChatSidebar, setIsChatSidebar] = useState(true)
+    const [isChatSidebar, setIsChatSidebar] = useState(false)
     const [loading, setLoading] = useState(false);
     const [chats, setChats] = useState<ChatData[]>([])
 
     const getChat = useCallback(async () => {
         try {
             setLoading(true)
-            // const res = await fetch(`${BackendUrl}/api/v1/chat`)
-            // const data = await res.json();
             const res = await backendApi.getChats();
             console.log(res)
             setChats(res.data.data)
