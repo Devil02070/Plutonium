@@ -2,7 +2,7 @@
 import BorderEdges from "@/components/BorderEdges";
 import { H3, P12, P14, P16 } from "@/components/typography";
 import { Button } from "@/components/ui/button";
-import { formatTinyEth, handleKeyPress } from "@/lib/utils";
+import { handleKeyPress } from "@/lib/utils";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { LuUserRound } from "react-icons/lu";
@@ -10,29 +10,21 @@ import { MdOutlineWallet } from "react-icons/md";
 import { motion } from 'framer-motion'
 import { toast } from "sonner";
 import useContract from "@/hooks/useContract";
-import { ethers, parseEther } from "ethers";
-import { socket } from "@/utils/socket-io-client";
-import { Spinner } from "@/components/ui/spinner";
-import RoundStats from "./RoundStats";
+import { ethers, formatEther, parseEther } from "ethers";
+import { useAppKitAccount } from "@reown/appkit/react";
 
-export interface EventData {
-    block: number,
-    users: string[],
-    amounts: number[],
-    plt: number[],
-    one_plt_winner?: string,
-    powerhouse: number[],
-    one_plt_winner_amt: number,
+interface Stats {
+    powerhouseBalance: string,
+    userDeposit: string,
 }
 export default function Grid() {
+    const { address } = useAppKitAccount()
     const { readContract, getWriteContract } = useContract();
     const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
     const [amount, setAmount] = useState('')
     const [totalAmount, setTotalAmount] = useState(0)
     const [timer, setTimer] = useState(0)
     const [endTimestamp, setEndTimestamp] = useState(0)
-    const [currentTimestamp, setCurrentTimestamp] = useState(0)
-    const [gameEndData, setGameEndData] = useState<EventData[]>([]);
 
     const [amountBoxes, setAmountBoxes] = useState<number[]>([])
     const [winningIndex, setWinningIndex] = useState<number | null>(null);
@@ -41,49 +33,25 @@ export default function Grid() {
 
     const [users, setUsers] = useState<number[]>([])
     const [amounts, setAmounts] = useState<string[]>([])
-    const [gameStatus, setGameStatus] = useState(false)
 
-    const [isDepositing, setIsDepositing] = useState(false)
-    const getCurrentTimestamp = async () => {
-        try {
-            const browserProvider = new ethers.JsonRpcProvider('https://sepolia.infura.io/v3/bab8e5589eb8429898ea91cc554d641f');
-            const block = await browserProvider.getBlock("latest");
-            console.log("current TS", block?.timestamp);
-            setCurrentTimestamp(Number(block?.timestamp))
-        } catch (err) {
-            console.error("current ts error", err);
-        }
-    };
-    const getEndTimestamp = async () => {
-        try {
-            const ts = await readContract.endGame();
-            console.log('End TS', ts)
-            setEndTimestamp(ts)
-        } catch (err) {
-            console.log("End ts error", err);
-        }
-    }
-    const getGameStatus = async () => {
-        try {
-            const status = await readContract.isActive();
-            console.log('game status', status)
-            setGameStatus(status)
-        } catch (err) {
-            console.log("Status error", err);
-        }
-    }
+    const [stats, setStats] = useState<Stats>({
+        powerhouseBalance: '0',
+        userDeposit: '0',
+    })
 
     const getRoundDetails = async () => {
         try {
             const roundDetails = await readContract.getRoundDetails();
+            console.log('round Details', roundDetails)
+
             const arr1 = Array.from(roundDetails[0]);
             const arr2 = Array.from(roundDetails[1]);
 
             const users = [...arr1].map(x => Number(x));
             const blockAmounts = [...arr2].map(x => String(x));
 
-            // console.log('User Details 1', users)
-            // console.log('Amounts Details 2', blockAmounts)
+            console.log('User Details 1', users)
+            console.log('Amounts Details 2', blockAmounts)
 
             setUsers(users)
             setAmounts(blockAmounts)
@@ -92,6 +60,42 @@ export default function Grid() {
         }
     };
 
+    const getPowerhouseBalance = async () => {
+        try {
+            const amount = await readContract.powerHouseTokenBalance();
+            console.log('powerhouseBalance', amount)
+            const formatted = amount
+                ? ethers.formatEther(amount)
+                : "0";
+            setStats({ ...stats, powerhouseBalance: formatted })
+        } catch (err) {
+            console.log("view error", err);
+        }
+    }
+
+    const getTotalUserDeposit = async () => {
+        try {
+            const amount = await readContract.totalUserStake(address);
+            console.log('userDeposit', amount)
+            const formatted = amount
+                ? ethers.formatEther(amount)
+                : "0";
+            setStats({ ...stats, userDeposit: formatted })
+        } catch (err) {
+            console.log("view error", err);
+        }
+    }
+
+    const getTimeStamp = async () => {
+        try {
+            const ts = await readContract.startGame();
+            console.log('timeStamp', ts)
+            setEndTimestamp(ts)
+        } catch (err) {
+            console.log("ts error", err);
+        }
+    }
+
     const toggleSelected = (index: number) => {
         setSelectedIndexes((prev) =>
             prev.includes(index)
@@ -99,18 +103,16 @@ export default function Grid() {
                 : [...prev, index]
         )
     }
-
     const handleDeposit = async () => {
         try {
-            setIsDepositing(true)
             if (selectedIndexes.length === 0) {
                 toast.error('selected blocks first')
                 return;
             };
             const splitAmount = parseEther(amount.toString());
             const amountsPerBox = selectedIndexes.map(() => Number(splitAmount));
-            // console.log('selected blocks', selectedIndexes)
-            // console.log('amount blocks', amountsPerBox)
+            console.log('selected blocks', selectedIndexes)
+            console.log('amount blocks', amountsPerBox)
 
             const writeContract = await getWriteContract();
             if (!writeContract) {
@@ -126,8 +128,6 @@ export default function Grid() {
             setSelectedIndexes([])
         } catch (error) {
             console.log(error)
-        } finally {
-            setIsDepositing(false)
         }
     }
 
@@ -136,38 +136,41 @@ export default function Grid() {
         setTotalAmount(selectedBoxes * Number(amount))
     }, [amount, selectedIndexes])
 
+    // useEffect(() => {
+    //     const users = Array.from({ length: 25 }, () => Math.floor(Math.random() * 500));
+    //     const amounts = Array.from({ length: 25 }, () =>
+    //         (Math.random() * 9000 + 100).toFixed(2)
+    //     );
+    //     setUsers(users)
+    //     setAmounts(amounts)
+    // }, [])
+
     // remaining time
     useEffect(() => {
-        if (endTimestamp && currentTimestamp) {
-            const remaining_ts = Number(endTimestamp) - currentTimestamp;
-            console.log(Number(endTimestamp), currentTimestamp);
-            // console.log('Remaining time:', remaining_ts);
-
+        if (endTimestamp) {
+            const current_ts = Math.floor(Date.now() / 1000);
+            const end_ts = endTimestamp;
+            const remaining_ts = end_ts - current_ts;
             if (remaining_ts > 0) {
-                setIsEnded(false);
+                setIsEnded(false)
                 setTimer(remaining_ts);
             } else {
+                // setIsEnded(true);
                 setIsEnded(true);
                 setTimer(0);
             }
         }
-    }, [endTimestamp, currentTimestamp]);
+    }, [endTimestamp]);
 
     useEffect(() => {
         if (timer > 0) {
-            const interval = setInterval(() => setTimer(t => t - 1), 1000);
+            const interval = setInterval(() => setTimer((t) => t - 1), 1000);
             return () => clearInterval(interval);
         }
-    }, [timer]);
 
-    useEffect(() => {
-        if (timer === 0 && gameEndData && winningIndex === null) {
-            // const randomWinner = Math.floor(Math.random() * 25);
-            // setWinningIndex(randomWinner);
-            // setIsEnded(true);
-            const winnerBlock = gameEndData[0]?.block;
-            // console.log('winning Block', winnerBlock)
-            setWinningIndex(winnerBlock);
+        if (timer === 0 && winningIndex === null) {
+            const randomWinner = Math.floor(Math.random() * 25);
+            setWinningIndex(randomWinner);
             setIsEnded(true);
 
             // show glow after fade
@@ -180,88 +183,25 @@ export default function Grid() {
                 setIsEnded(false);
                 setSelectedIndexes([])
                 setAmountBoxes([])
-                setEndTimestamp(0)
-                setCurrentTimestamp(0)
-
-                //get new game 
-                setGameStatus(false);
             }, 8000);
         }
-    }, [gameEndData]);
-
-    useEffect(() => {
-        let interval: NodeJS.Timeout | undefined;
-
-        // Start polling ONLY when status is false (game not active)
-        if (gameStatus === false) {
-            interval = setInterval(() => {
-                getGameStatus();
-            }, 3000);
-        }
-
-        // If game becomes active → stop polling
-        if (gameStatus === true && interval) {
-            clearInterval(interval);
-            interval = undefined;
-        }
-
-        // Cleanup when component unmounts
-        return () => {
-            if (interval) clearInterval(interval);
-        };
-
-    }, [gameStatus]);
-
-    useEffect(() => {
-        //get new game 
-        if (gameStatus === true) {
-            getCurrentTimestamp();
-            getEndTimestamp()
-        }
-    }, [gameStatus])
-
-    // useEffect(() => {
-    //     if (!gameStatus) return;
-
-    //     const interval = setInterval(() => {
-    //         getCurrentTimestamp();
-    //     }, 5000);
-
-    //     return () => clearInterval(interval);
-    // }, [gameStatus]);
-
-    useEffect(() => {
-        // getPowerhouseBalance();
-        getCurrentTimestamp();
-        getEndTimestamp()
-        getGameStatus()
-    }, []);
+    }, [timer]);
 
     useEffect(() => {
         getRoundDetails();
-        const interval = setInterval(() => {
-            getRoundDetails();
-        }, 5000)
-        return () => clearInterval(interval)
+        getPowerhouseBalance();
+        getTimeStamp()
     }, []);
 
     useEffect(() => {
-        // const gamehandler = (data: { data: EventData }) => {
-        const gamehandler = (data: EventData[]) => {
-            // console.log('gameEndData', data[0]);
-            setGameEndData(data)
-        };
-        socket.on(`minted`, gamehandler);
-        return () => {
-            socket.off(`minted`, gamehandler);
-        };
-    }, []);
+        getTotalUserDeposit();
+    }, [address]);
 
 
     return (
         <>
             {/* Game status */}
-            <RoundStats timer={timer} />
+            <RoundStats timer={timer} stats={stats} />
 
             {/* Game */}
             <div className="grid grid-cols-5 gap-1 lg:gap-2.5 h-fit mt-4">
@@ -277,14 +217,13 @@ export default function Grid() {
                     const bgColor = isWinner && showWinner ? 'bg-dark-green' : isDepositedSelected ? 'bg-background' : hasAmount ? 'bg-primary-dark' : isSelected ? 'bg-background' : 'bg-black-2'
 
                     const total = Number(amounts[i]) ? Number(amounts[i]) : 0
-                    const formatted  = total ? ethers.formatEther(total) : 0;
-                    // const formattedNumber = (total >= 1000) ? `${(total / 1000).toFixed(2)} K` : `${total.toFixed(2)}`;
+                    const formattedNumber = (total >= 1000) ? `${(total / 1000).toFixed(2)} K` : `${total.toFixed(2)}`;
                     return (
                         <motion.div
                             key={i}
                             initial={{ opacity: 1, scale: 1 }}
                             animate={
-                                isEnded && winningIndex
+                                isEnded
                                     ? isWinner
                                         ? { opacity: 1, scale: 1 }
                                         : { opacity: 0, scale: 0.8 }
@@ -302,7 +241,7 @@ export default function Grid() {
                                     <P14 className="text-dark-gray font-normal hidden md:block">#{i + 1}</P14>
                                     <P12 className="text-dark-gray font-normal md:hidden">#{i + 1}</P12>
                                     {/* <H3 className="font-bold">{(Number(formattedNumber) > 0) ? ethers.formatEther(formattedNumber) : 0}</H3> */}
-                                    <H3 className="font-bold">{formatTinyEth(Number(formatted))}</H3>
+                                    <H3 className="font-bold">{formattedNumber}</H3>
                                     <P12 className={`flex items-center font-medium mx-auto w-fit gap-2 p-1 rounded-sm bg-gray-30 text-gray-80`}>
                                         <LuUserRound size={12} /> {users[i]}
                                     </P12>
@@ -336,24 +275,12 @@ export default function Grid() {
                     <BorderEdges cornerColor="#1297F5" cornerThickness={2} padding={4}>
                         <Button
                             onClick={() => handleDeposit()}
-                            disabled={!amount || selectedIndexes.length === 0 || timer === 0}
-                        >
-                            {
-                                isDepositing ? <Spinner /> : 'Deposit'
-                            }
-                        </Button>
+                            disabled={!amount || !selectedIndexes || timer === 0}
+                        >Deposit</Button>
                     </BorderEdges>
                 </div>
                 <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-4 w-full">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="hover:bg-primary hover:text-background cursor-pointer text-sm"
-                        onClick={() => setAmount('0.00000001')}
-                    >
-                        0.00000001
-                    </Button>
-                    {["10000", "50000", "100000", '150000', '200000'].map((val) => (
+                    {["5000", "10000", "50000", "100000", '150000', '200000'].map((val) => (
                         <Button
                             key={val}
                             variant="outline"
@@ -364,7 +291,6 @@ export default function Grid() {
                             +{Number(val) / 1000}K
                         </Button>
                     ))}
-
                 </div>
 
                 <div className="bg-gray-30 rounded px-3 py-3.5 space-y-4">
@@ -379,5 +305,43 @@ export default function Grid() {
                 </div>
             </div>
         </>
+    )
+}
+
+interface RoundStatsProps {
+    timer: number
+    stats: Stats
+}
+const RoundStats = ({ timer, stats }: RoundStatsProps) => {
+    return (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-13 text-center w-full border-[1.5px] border-gray-40 p-2">
+            <BorderEdges cornerColor="#6E54FF" cornerThickness={2}>
+                <div className="p-2 space-y-2.5 text-center">
+                    <P12 className="text-gray-70 font-medium">Powerhouse</P12>
+                    <div className="flex items-center gap-2 justify-center">
+                        <Image src="/media/logo-icon.svg" alt="logo" height={20} width={20} className="rounded-full" />
+                        <P16 className="font-bold">{stats.powerhouseBalance}</P16>
+                    </div>
+                </div>
+            </BorderEdges>
+            <div className="p-2 space-y-2.5 text-center">
+                <P12 className="text-gray-70 font-medium">Time Remaining</P12>
+                <P16 className="font-bold text-base-red">00:{timer}</P16>
+            </div>
+            <div className="p-2 space-y-2.5 text-center">
+                <P12 className="text-gray-70 font-medium">Total Deposit</P12>
+                <div className="flex items-center gap-2 justify-center">
+                    <Image src="/media/token.svg" alt="logo" height={16} width={16} className="rounded-full" />
+                    <P16 className="font-bold">80.34</P16>
+                </div>
+            </div>
+            <div className="p-2 space-y-2.5 text-center">
+                <P12 className="text-gray-70 font-medium">Your Deposit</P12>
+                <div className="flex items-center gap-2 justify-center">
+                    <Image src="/media/token.svg" alt="logo" height={16} width={16} className="rounded-full" />
+                    <P16 className="font-bold">{stats.userDeposit}</P16>
+                </div>
+            </div>
+        </div>
     )
 }

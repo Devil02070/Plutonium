@@ -31,7 +31,8 @@ export const useWalletAuth = () => {
             // const data = await res.json();
             // const { nonce } = data.data;
             const res = await backendApi.getNonce()
-            const { nonce } = res.data;
+            // console.log('nonce',)
+            const { nonce } = res.data.data;
             const message = `Welcome to Plutonium ${nonce}`;
 
             // Sign the message

@@ -1,20 +1,52 @@
-import BorderEdges from "@/components/BorderEdges";
-import { H1, P12, P14, P16 } from "@/components/typography";
-import Image from "next/image";
+'use client'
 import MiningTable from "./MiningTable";
 import PowerhouseTable from "./PowerhouseTable";
 import BuybackTable from "./BuybackTable";
 import GridStats from "./GridStats";
+import backendApi from "@/utils/backendApi";
+import { useCallback, useEffect, useState } from "react";
+import { MiningData } from "@/utils/types";
 
 export default function Body() {
+    const [mining, setMining] = useState<MiningData[]>([])
+    const [powerhouse, setPowerhouse] = useState<MiningData[]>([])
+
+    const getMiningData = useCallback(async () => {
+        try {
+            const res = await backendApi.getExploreMining();
+            setMining(res.data.data)
+            console.log(res.data.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }, [])
+
+    const getPowerhouseData = useCallback(async () => {
+        try {
+            const res = await backendApi.getExplorePowerhouse();
+            setPowerhouse(res.data.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }, [])
+
+    useEffect(() => {
+        getMiningData();
+        getPowerhouseData()
+        const interval = setInterval(() => {
+            getMiningData();
+            getPowerhouseData();
+        }, 30000)
+        return () => clearInterval(interval)
+    }, [])
     return (
         <>
             <div className="bg-no-repeat bg-center" style={{ backgroundImage: 'url("/media/Lines.svg")' }}>
                 <GridStats />
 
-                <MiningTable />
+                <MiningTable mining={mining} />
 
-                <PowerhouseTable />
+                <PowerhouseTable powerhouse={powerhouse}/>
 
                 <BuybackTable />
             </div>

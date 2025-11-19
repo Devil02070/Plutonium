@@ -33,14 +33,24 @@ async function getChats() {
 async function sendChat(address: string, content: string) {
     return await api.post('/api/v1/chat', {
         address,
-        content
+        content,
     })
+}
+
+async function getExploreMining() {
+    return await api.get('/api/v1/explore/recent')
+}
+
+async function getExplorePowerhouse() {
+    return await api.get('api/v1/explore/powerhouse')
 }
 
 const backendApi = {
     getNonce,
     getChats,
     sendChat,
+    getExplorePowerhouse,
+    getExploreMining
 }
 
 export default backendApi

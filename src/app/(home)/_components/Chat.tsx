@@ -2,7 +2,6 @@
 import { H2, P12, P16 } from "@/components/typography";
 import { Button } from "@/components/ui/button";
 import { shortenAddress } from "@/lib/utils";
-import { BackendUrl } from "@/utils/env";
 import { ChatData } from "@/utils/types";
 import { useAppKitAccount } from "@reown/appkit/react";
 import dayjs from "dayjs";
@@ -20,7 +19,7 @@ interface ChatProps {
     loading: boolean
 }
 export default function Chat({ chats, loading }: ChatProps) {
-    const { address, isConnected } = useAppKitAccount()
+    const { address } = useAppKitAccount()
     const { handleSignMsg } = useWalletAuth()
 
     const [content, setContent] = useState('')
@@ -41,31 +40,13 @@ export default function Chat({ chats, loading }: ChatProps) {
         }
         const authTokenString = Cookies.get('authToken');
         if (!authTokenString) {
-            // toast.error('Signature unverified!');
             handleSignMsg()
             return;
         };
         try {
-
-            // Parse the JSON string
-            // const authTokenData = JSON.parse(authTokenString);
-            // // Extract the actual token (adjust the property name based on your backend response)
-            // const token = authTokenData.token || authTokenData.accessToken || authTokenData;
-            // console.log('Token to send:', token);
-            // const res = await fetch(`${BackendUrl}/api/v1/chat`, {
-            //     method: 'POST',
-            //     credentials: "include",
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         Authorization: `Bearer ${token}`
-            //     },
-            //     body: JSON.stringify({
-            //         content,
-            //         address
-            //     })
-            // })
-            const res = await backendApi.sendChat(content, address)
+            const res = await backendApi.sendChat(address, content)
             console.log(res);
+            setContent('')
         } catch (error) {
             console.log(error)
         }
@@ -160,3 +141,45 @@ export default function Chat({ chats, loading }: ChatProps) {
         </div>
     )
 }
+
+//  const sendChatMessage = async () => {
+//         if (!address) {
+//             toast.error('Wallet not Connected');
+//             return;
+//         };
+//         if (!content.trim()) {
+//             toast.error('Message cannot be empty');
+//             return;
+//         }
+//         const authTokenString = Cookies.get('authToken');
+//         if (!authTokenString) {
+//             // toast.error('Signature unverified!');
+//             handleSignMsg()
+//             return;
+//         };
+//         try {
+
+//             // Parse the JSON string
+//             // const authTokenData = JSON.parse(authTokenString);
+//             // // Extract the actual token (adjust the property name based on your backend response)
+//             // const token = authTokenData.token || authTokenData.accessToken || authTokenData;
+//             // console.log('Token to send:', token);
+//             // const res = await fetch(`${BackendUrl}/api/v1/chat`, {
+//             //     method: 'POST',
+//             //     credentials: "include",
+//             //     headers: {
+//             //         'Content-Type': 'application/json',
+//             //         Authorization: `Bearer ${token}`
+//             //     },
+//             //     body: JSON.stringify({
+//             //         content,
+//             //         address
+//             //     })
+//             // })
+//             const res = await backendApi.sendChat(address, content)
+//             console.log(res);
+//             setContent('')
+//         } catch (error) {
+//             console.log(error)
+//         }
+//     }

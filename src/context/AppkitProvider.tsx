@@ -2,7 +2,7 @@
 
 import { createAppKit } from "@reown/appkit/react";
 import { EthersAdapter } from "@reown/appkit-adapter-ethers";
-import { monadTestnet, bscTestnet } from "@reown/appkit/networks";
+import { monadTestnet, bscTestnet, sepolia } from "@reown/appkit/networks";
 import { ProjectId } from "@/utils/env";
 
 // 1. Get projectId at https://dashboard.reown.com
@@ -21,7 +21,7 @@ createAppKit({
     adapters: [new EthersAdapter()],
     metadata,
     // networks: [mainnet, arbitrum, monadTestnet],
-    networks: [monadTestnet, bscTestnet],
+    networks: [monadTestnet, bscTestnet, sepolia],
     projectId,
     features: {
         analytics: true, // Optional - defaults to your Cloud configuration

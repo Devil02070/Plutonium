@@ -10,38 +10,49 @@ import Chat from "./Chat";
 import Grid from "./Grid";
 import Winners from "./Winners";
 
+import ABI from "@/abi/read.json";
+import { useAppKitAccount, useAppKitProvider, type Provider } from "@reown/appkit/react";
+import useContract from "@/hooks/useContract";
+import { ethers } from "ethers";
+import { toast } from "sonner";
+
 export default function HomePage() {
     const [isChatSidebar, setIsChatSidebar] = useState(true)
     const [loading, setLoading] = useState(false);
-
     const [chats, setChats] = useState<ChatData[]>([])
+
     const getChat = useCallback(async () => {
         try {
             setLoading(true)
             // const res = await fetch(`${BackendUrl}/api/v1/chat`)
             // const data = await res.json();
             const res = await backendApi.getChats();
-            setChats(res.data)
+            console.log(res)
+            setChats(res.data.data)
         } catch (error) {
             console.log(error)
         } finally {
             setLoading(false)
         }
     }, []);
+
     useEffect(() => {
         getChat()
     }, [])
 
     useEffect(() => {
-        const chatHandler = (data: { data: ChatData }) => {
-            console.log('newdata', data);
-            setChats((prevChats) => [data.data, ...prevChats]);
+        // const chatHandler = (data: { data: ChatData }) => {
+        const chatHandler = (data: ChatData[]) => {
+            console.log('newdata', data[0]);
+            setChats((prevChats) => [data[0], ...prevChats]);
         };
         socket.on(`chat`, chatHandler);
         return () => {
             socket.off(`chat`, chatHandler);
         };
     }, []);
+
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-0 md:gap-6 lg:gap-8 2xl:gap-15 pe-4 pb-14 md:pb-0 mt-6 px-4">
             <div className="col-span-1 md:h-[calc(100vh-120px)] overflow-y-auto scrollbar-hide">

@@ -8,3 +8,29 @@ export interface ChatData {
         image: string | null
     }
 }
+
+export interface MiningData {
+    id: number,
+    win_idx: number,
+    winners_count: number,
+    is_plt_split: boolean,
+    plt_winner_addr: string | null,
+    deposit: number,
+    vaulted: number,
+    winnings: number,
+    powerhouse: number,
+    ts: number
+}
+
+// export interface PowerhouseData{
+//      id: number,
+//     win_idx: number,
+//     winners_count: number,
+//     is_plt_split: boolean,
+//     plt_winner_addr: string | null,
+//     deposit: number,
+//     vaulted: number,
+//     winnings: number,
+//     powerhouse: number,
+//     ts: number
+// }
