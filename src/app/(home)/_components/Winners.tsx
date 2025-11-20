@@ -7,6 +7,7 @@ import { socket } from "@/utils/socket-io-client";
 import { formatTinyEth, shortenAddress } from "@/lib/utils";
 import { ethers } from "ethers";
 import { EventData } from "@/utils/types";
+import WinnerModal from "@/components/WinnerModal";
 
 export default function Winners() {
     const [gameEndData, setGameEndData] = useState<EventData[]>()
@@ -28,7 +29,7 @@ export default function Winners() {
                 // After data is set, wait 10 seconds then clear it
                 clearDataTimeout = setTimeout(() => {
                     setGameEndData(undefined);
-                }, 10000);
+                }, 60000);
             }, 8000);
         };
         socket.on("minted", gamehandler);
@@ -110,8 +111,38 @@ export default function Winners() {
                             </TableBody>
                     }
                 </Table>
-
             </div>
+            {
+                gameEndData &&
+                <WinnerModal gameEndData={gameEndData[0]} />
+            }
+            {/* {gameEndData &&
+                <>
+                    {
+                        gameEndData[0].users.map((user, i) => {
+                            const isWinner = user === address;
+                            
+                            const monRewardAmount = gameEndData[0].amounts[i];
+                            const isOneWinner = gameEndData[0].one_plt_winner ?? undefined
+
+                            const plt_reward = gameEndData[0].one_plt_winner_amt;
+                            const split_plt_reward = gameEndData[0].plt[i]
+
+                            // const formattedReward = reward ? ethers.formatEther(reward) : "0";
+                            if(!isWinner) return;
+                            
+                            return (
+                                <WinnerModal monAmount={monRewardAmount} pltAmount={split_plt_reward} open={true}   />
+                            )
+                        })
+                    }
+                </>
+            } */}
+
+
+
+
+
             {/* {
                             Array.from({ length: 20 }).map((_, i) => {
                                 return (

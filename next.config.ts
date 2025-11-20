@@ -11,7 +11,9 @@ const nextConfig: NextConfig = {
     PROJECT_ID: process.env.PROJECT_ID,
     BACKEND_URL: process.env.BACKEND_URL,
     SOCKET_SERVER: process.env.SOCKET_SERVER,
-    COOKIE_TOKEN: process.env.COOKIE_TOKEN
+    COOKIE_TOKEN: process.env.COOKIE_TOKEN,
+    PUBLIC_RPC: process.env.PUBLIC_RPC,
+    CONTRACT_ADDRESS: process.env.CONTRACT_ADDRESS
   },
 };
 

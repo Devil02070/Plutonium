@@ -10,13 +10,15 @@ import { MdOutlineWallet } from "react-icons/md";
 import { motion } from 'framer-motion'
 import { toast } from "sonner";
 import useContract from "@/hooks/useContract";
-import { ethers, parseEther } from "ethers";
+import { BrowserProvider, ethers, parseEther } from "ethers";
 import { socket } from "@/utils/socket-io-client";
 import { Spinner } from "@/components/ui/spinner";
 import RoundStats from "./RoundStats";
 import { EventData } from "@/utils/types";
+import useBalance from "@/hooks/useBalance";
 
 export default function Grid() {
+    const { balance } = useBalance()
     const { readContract, getWriteContract } = useContract();
     const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
     const [amount, setAmount] = useState('')
@@ -255,7 +257,7 @@ export default function Grid() {
                     const bgColor = isWinner && showWinner ? 'bg-dark-green' : isDepositedSelected ? 'bg-background' : hasAmount ? 'bg-primary-dark' : isSelected ? 'bg-background' : 'bg-black-2'
 
                     const total = Number(amounts[i]) ? Number(amounts[i]) : 0
-                    const formatted  = total ? ethers.formatEther(total) : 0;
+                    const formatted = total ? ethers.formatEther(total) : 0;
                     return (
                         <motion.div
                             key={i}
@@ -305,7 +307,7 @@ export default function Grid() {
                         />
                         <div className="flex items-center gap-1">
                             <MdOutlineWallet size={30} />
-                            <P14 className="font-semibold">0.00</P14>
+                            <P14 className="font-semibold">{balance.toFixed(6)}</P14>
                             <Image src="/media/token.svg" alt="logo" height={16} width={16} className="rounded-full" />
                         </div>
                     </div>

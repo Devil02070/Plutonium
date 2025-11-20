@@ -27,11 +27,7 @@ export const useWalletAuth = () => {
             const signer = new JsonRpcSigner(provider, address);
 
             // Get nonce from backend
-            // const res = await fetch(`${BackendUrl}/api/v1/auth/nonce`);
-            // const data = await res.json();
-            // const { nonce } = data.data;
             const res = await backendApi.getNonce()
-            // console.log('nonce',)
             const { nonce } = res.data.data;
             const message = `Welcome to Plutonium ${nonce}`;
 

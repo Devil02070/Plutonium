@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 
-
+// Handle Nubmer Inputs
 export const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
   // const { value, selectionStart, id } = e.currentTarget;
   const { value } = e.currentTarget;
@@ -39,20 +39,18 @@ export const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
   // }
 };
 
-
+// Short Address
 export function shortenAddress(address: string, startChars: number = 3, endChars: number = 5) {
-    if (address.length <= startChars + endChars) {
-        return address
-    }
-    const start = address.substring(0, startChars)
-    const end = address.substring(address.length - endChars)
-    return `${start}...${end}`
+  if (address.length <= startChars + endChars) {
+    return address
+  }
+  const start = address.substring(0, startChars)
+  const end = address.substring(address.length - endChars)
+  return `${start}...${end}`
 }
 
 
-
-
-
+// Sort exponential Numbers
 const subscripts: Record<string, string> = {
   "0": "₀", "1": "₁", "2": "₂", "3": "₃",
   "4": "₄", "5": "₅", "6": "₆", "7": "₇",
@@ -62,8 +60,6 @@ const subscripts: Record<string, string> = {
 function toSubscript(n: number) {
   return n.toString().split("").map(d => subscripts[d] ?? "").join("");
 }
-
-
 export function formatTinyEth(raw: number) {
   if (!raw || raw === 0) return "0";
 
@@ -80,21 +76,3 @@ export function formatTinyEth(raw: number) {
 
   return `0.0${toSubscript(leadingZeros)}${significant}`;
 }
-
-// export function formatTinyEth(raw:number) {
-//   // const num = Number(ethers.formatEther(raw));
-
-//   if (raw === 0) return "0";
-
-//   const str = raw.toString(); // "0.0000000040238"
-
-//   // Count zeros after decimal until a non-zero appears
-//   const match = str.match(/0\.(0*)([1-9]\d*)/);
-
-//   if (!match) return str; // fallback for normal numbers
-
-//   const leadingZeros = match[1].length;   // 9
-//   const significant = match[2].slice(0, 3); // "402"
-
-//   return `0.0${toSubscript(leadingZeros)}${significant}`;
-// }

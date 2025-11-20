@@ -45,7 +45,6 @@ export default function RoundStats({ timer }: RoundStatsProps) {
 
     const getTotalUserDeposit = async () => {
         if (!address) return;
-        console.log('address', address)
         try {
             const amount = await readContract.totalUserStake(address);
             // console.log('userDeposit', amount)
@@ -67,7 +66,7 @@ export default function RoundStats({ timer }: RoundStatsProps) {
                 ? ethers.formatEther(amount)
                 : "0";
             // setStats({ ...stats, userDeposit: formatted })
-            setTotalDeposit(Number(amount))
+            setTotalDeposit(Number(formatted))
         } catch (err) {
             console.log("overall error", err);
         }
@@ -117,7 +116,7 @@ export default function RoundStats({ timer }: RoundStatsProps) {
                 <P12 className="text-gray-70 font-medium">Total Deposit</P12>
                 <div className="flex items-center gap-2 justify-center">
                     <Image src="/media/token.svg" alt="logo" height={16} width={16} className="rounded-full" />
-                    <P16 className="font-bold">{totalDeposit}</P16>
+                    <P16 className="font-bold">{formatTinyEth(totalDeposit)}</P16>
                 </div>
             </div>
             <div className="p-2 space-y-2.5 text-center">
