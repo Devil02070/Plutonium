@@ -10,12 +10,13 @@ import { MdOutlineWallet } from "react-icons/md";
 import { motion } from 'framer-motion'
 import { toast } from "sonner";
 import useContract from "@/hooks/useContract";
-import { BrowserProvider, ethers, parseEther } from "ethers";
+import { ethers, parseEther } from "ethers";
 import { socket } from "@/utils/socket-io-client";
 import { Spinner } from "@/components/ui/spinner";
 import RoundStats from "./RoundStats";
 import { EventData } from "@/utils/types";
 import useBalance from "@/hooks/useBalance";
+import { PublicRPC } from "@/utils/env";
 
 export default function Grid() {
     const { balance } = useBalance()
@@ -40,7 +41,7 @@ export default function Grid() {
     const [isDepositing, setIsDepositing] = useState(false)
     const getCurrentTimestamp = async () => {
         try {
-            const browserProvider = new ethers.JsonRpcProvider('https://sepolia.infura.io/v3/bab8e5589eb8429898ea91cc554d641f');
+            const browserProvider = new ethers.JsonRpcProvider(PublicRPC);
             const block = await browserProvider.getBlock("latest");
             console.log("current TS", block?.timestamp);
             setCurrentTimestamp(Number(block?.timestamp))
@@ -103,8 +104,10 @@ export default function Grid() {
             };
             const splitAmount = parseEther(amount.toString());
             const amountsPerBox = selectedIndexes.map(() => Number(splitAmount));
-            // console.log('selected blocks', selectedIndexes)
-            // console.log('amount blocks', amountsPerBox)
+            console.log('selected blocks', selectedIndexes)
+            console.log('amount blocks', amountsPerBox)
+            console.log(amount, splitAmount)
+            const totalAmount = Number(splitAmount) * selectedIndexes.length
 
             const writeContract = await getWriteContract();
             if (!writeContract) {
@@ -112,7 +115,7 @@ export default function Grid() {
                 return;
             };
             const transaction = await writeContract.stake(selectedIndexes, amountsPerBox, {
-                value: splitAmount
+                value: totalAmount
             });
             console.log('write response', transaction)
 

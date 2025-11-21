@@ -21,6 +21,7 @@
   { "inputs": [], "name": "Err_GameActive", "type": "error" },
   { "inputs": [], "name": "Err_GameNotActive", "type": "error" },
   { "inputs": [], "name": "Err_InvalidBlockIndex", "type": "error" },
+  { "inputs": [], "name": "Err_InvalidPayment", "type": "error" },
   { "inputs": [], "name": "Err_InvalidRandom", "type": "error" },
   { "inputs": [], "name": "Err_InvalidRequest", "type": "error" },
   { "inputs": [], "name": "Err_MintExceeded", "type": "error" },
@@ -153,6 +154,19 @@
       {
         "indexed": false,
         "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "ProtcolFee",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
         "name": "requestId",
         "type": "uint256"
       },
@@ -238,6 +252,12 @@
         "internalType": "address",
         "name": "user",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "stakeAmount",
+        "type": "uint256"
       },
       {
         "indexed": false,
