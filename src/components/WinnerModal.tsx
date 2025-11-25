@@ -20,6 +20,8 @@ export default function WinnerModal({ gameEndData }: WinnerModalProps) {
     const [pltAmount, setPltAmount] = useState(0)
     const [rarity, setRarity] = useState<'normal' | 'jackpot' | 'rare'>('normal')
 
+    const [hasShown, setHasShown] = useState(false)
+
     useEffect(() => {
         if (!gameEndData || !address) return;
         const winnerIndex = gameEndData.users.findIndex(
@@ -30,6 +32,7 @@ export default function WinnerModal({ gameEndData }: WinnerModalProps) {
         console.log('hasWinner', hasWinner)
 
         if (hasWinner) {
+            setHasShown(true);
             setOpen(true)
             const monReward = gameEndData.amounts[winnerIndex]
             const formattedMonReward = ethers.utils.formatEther(`${monReward}`);
@@ -65,7 +68,7 @@ export default function WinnerModal({ gameEndData }: WinnerModalProps) {
                 console.log('jackpot amount', pltAmount, jackpotAmount)
             }
         }
-    }, [gameEndData])
+    }, [gameEndData, address, hasShown])
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
