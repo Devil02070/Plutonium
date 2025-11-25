@@ -10,7 +10,7 @@ import { MdOutlineWallet } from "react-icons/md";
 import { motion } from 'framer-motion'
 import { toast } from "sonner";
 import useContract from "@/hooks/useContract";
-import { ethers, parseEther } from "ethers";
+import { ethers } from "ethers";
 import { socket } from "@/utils/socket-io-client";
 import { Spinner } from "@/components/ui/spinner";
 import RoundStats from "./RoundStats";
@@ -41,9 +41,9 @@ export default function Grid() {
     const [isDepositing, setIsDepositing] = useState(false)
     const getCurrentTimestamp = async () => {
         try {
-            const browserProvider = new ethers.JsonRpcProvider(PublicRPC);
+            const browserProvider = new ethers.providers.JsonRpcProvider(PublicRPC);
             const block = await browserProvider.getBlock("latest");
-            console.log("current TS", block?.timestamp);
+            // console.log("current TS", block?.timestamp);
             setCurrentTimestamp(Number(block?.timestamp))
         } catch (err) {
             console.error("current ts error", err);
@@ -52,7 +52,7 @@ export default function Grid() {
     const getEndTimestamp = async () => {
         try {
             const ts = await readContract.endGame();
-            console.log('End TS', ts)
+            // console.log('End TS', ts)
             setEndTimestamp(ts)
         } catch (err) {
             console.log("End ts error", err);
@@ -61,7 +61,7 @@ export default function Grid() {
     const getGameStatus = async () => {
         try {
             const status = await readContract.isActive();
-            console.log('game status', status)
+            // console.log('game status', status)
             setGameStatus(status)
         } catch (err) {
             console.log("Status error", err);
@@ -97,36 +97,43 @@ export default function Grid() {
 
     const handleDeposit = async () => {
         try {
-            setIsDepositing(true)
+            setIsDepositing(true);
+
             if (selectedIndexes.length === 0) {
-                toast.error('selected blocks first')
+                toast.error('select blocks first');
                 return;
-            };
-            const splitAmount = parseEther(amount.toString());
-            const amountsPerBox = selectedIndexes.map(() => Number(splitAmount));
-            console.log('selected blocks', selectedIndexes)
-            console.log('amount blocks', amountsPerBox)
-            console.log(amount, splitAmount)
-            const totalAmount = Number(splitAmount) * selectedIndexes.length
+            }
+
+            const splitAmount = ethers.utils.parseEther(amount.toString());
+
+            const amountsPerBox = selectedIndexes.map(() => splitAmount);
+
+            const totalAmount = splitAmount.mul(selectedIndexes.length);
 
             const writeContract = await getWriteContract();
             if (!writeContract) {
-                toast.error('null')
+                toast.error('null contract');
                 return;
-            };
-            const transaction = await writeContract.stake(selectedIndexes, amountsPerBox, {
-                value: totalAmount
-            });
-            console.log('write response', transaction)
+            }
 
-            setAmountBoxes((prev) => Array.from(new Set([...prev, ...selectedIndexes])));
-            setSelectedIndexes([])
+            const tx = await writeContract.stake(
+                selectedIndexes,
+                amountsPerBox,
+                { value: totalAmount }
+            );
+
+            // console.log("write response", tx);
+
+            setAmountBoxes(prev => Array.from(new Set([...prev, ...selectedIndexes])));
+            setSelectedIndexes([]);
+
         } catch (error) {
-            console.log(error)
+            console.log(error);
         } finally {
-            setIsDepositing(false)
+            setIsDepositing(false);
         }
-    }
+    };
+
 
     useEffect(() => {
         const selectedBoxes = selectedIndexes.length;
@@ -259,8 +266,10 @@ export default function Grid() {
                     const borderColor = isWinner && showWinner ? 'border-light-green' : isDepositedSelected ? 'border-white' : hasAmount ? 'border-primary-light' : isSelected ? 'border-white' : 'border-gray-40'
                     const bgColor = isWinner && showWinner ? 'bg-dark-green' : isDepositedSelected ? 'bg-background' : hasAmount ? 'bg-primary-dark' : isSelected ? 'bg-background' : 'bg-black-2'
 
-                    const total = Number(amounts[i]) ? Number(amounts[i]) : 0
-                    const formatted = total ? ethers.formatEther(total) : 0;
+                    // const total = Number(amounts[i]) ? Number(amounts[i]) : 0
+                    // const formatted = total ? ethers.utils.formatEther(total) : 0;
+                    const total = amounts[i] || ethers.BigNumber.from(0);
+                    const formatted = ethers.utils.formatEther(total);
                     return (
                         <motion.div
                             key={i}
@@ -298,11 +307,11 @@ export default function Grid() {
             {/* Inputs */}
             <div className="space-y-4 mt-4">
                 <div className="flex items-center gap-3.5 w-full">
-                    <div className="flex items-center gap-4 border-[1.5px] border-gray-40 px-4 py-2 w-full">
+                    <div className="flex items-center gap-4 border-[1.5px] border-gray-40 px-4 py-2 w-full bg-background">
                         <input
                             type="text"
                             placeholder="0.00"
-                            className="text-2xl font-bold w-full focus:outline-none"
+                            className="text-2xl font-bold w-full focus:outline-none "
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             inputMode="decimal"
@@ -326,15 +335,7 @@ export default function Grid() {
                     </BorderEdges>
                 </div>
                 <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-4 w-full">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="hover:bg-primary hover:text-background cursor-pointer text-sm"
-                        onClick={() => setAmount('0.00000001')}
-                    >
-                        0.00000001
-                    </Button>
-                    {["10000", "50000", "100000", '150000', '200000'].map((val) => (
+                    {["0.001","1", "10", "100", '1000', '10000'].map((val) => (
                         <Button
                             key={val}
                             variant="outline"
@@ -342,13 +343,13 @@ export default function Grid() {
                             className="hover:bg-primary hover:text-background cursor-pointer text-sm"
                             onClick={() => setAmount(val)}
                         >
-                            +{Number(val) / 1000}K
+                            +{Number(val)}
                         </Button>
                     ))}
 
                 </div>
 
-                <div className="bg-gray-30 rounded px-3 py-3.5 space-y-4">
+                <div className="bg-[#1A1A1A] rounded px-3 py-3.5 space-y-4">
                     <div className="flex items-center justify-between gap-2">
                         <P12 className="text-gray-60 font-medium">Block</P12>
                         <P16 className="font-bold">x{selectedIndexes.length}</P16>

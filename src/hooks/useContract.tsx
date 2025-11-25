@@ -7,7 +7,7 @@ import { ContractAddress, PublicRPC } from "@/utils/env";
 export default function useContract() {
 
     // 1. PUBLIC PROVIDER FOR READS
-    const readProvider = new ethers.JsonRpcProvider(PublicRPC);
+    const readProvider = new ethers.providers.JsonRpcProvider(PublicRPC);
     const readContract = new ethers.Contract(ContractAddress, ABI, readProvider);
 
     // 2. WALLET PROVIDER FOR WRITES
@@ -16,8 +16,8 @@ export default function useContract() {
     const getWriteContract = async () => {
         if (!walletProvider) return null;
 
-        const browserProvider = new ethers.BrowserProvider(walletProvider);
-        const signer = await browserProvider.getSigner();
+        const browserProvider = new ethers.providers.Web3Provider(walletProvider);
+        const signer = browserProvider.getSigner();
 
         return new ethers.Contract(ContractAddress, ABI, signer);
     };

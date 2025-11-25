@@ -1,6 +1,6 @@
 'use client'
 import { useAppKitAccount, useAppKitNetworkCore, useAppKitProvider, type Provider } from "@reown/appkit/react";
-import { BrowserProvider, formatEther } from "ethers";
+import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 
 export default function useBalance() {
@@ -10,9 +10,9 @@ export default function useBalance() {
     const { chainId } = useAppKitNetworkCore();
     const handleGetBalance = async () => {
         if (!address) return
-        const provider = new BrowserProvider(walletProvider, chainId);
+        const provider = new ethers.providers.Web3Provider(walletProvider, chainId);
         const balance = await provider.getBalance(address);
-        const eth = formatEther(balance);
+        const eth = ethers.utils.formatEther(balance);
         console.log(`${eth} ETH`);
         setBalance(Number(eth))
     };

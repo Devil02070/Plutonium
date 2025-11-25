@@ -1,7 +1,7 @@
 "use client";
 
 import { createAppKit } from "@reown/appkit/react";
-import { EthersAdapter } from "@reown/appkit-adapter-ethers";
+import { Ethers5Adapter } from "@reown/appkit-adapter-ethers5";
 import { monadTestnet, bscTestnet, sepolia } from "@reown/appkit/networks";
 import { ProjectId } from "@/utils/env";
 
@@ -18,7 +18,7 @@ const metadata = {
 
 // 3. Create the AppKit instance
 createAppKit({
-    adapters: [new EthersAdapter()],
+    adapters: [new Ethers5Adapter()],
     metadata,
     // networks: [mainnet, arbitrum, monadTestnet],
     networks: [monadTestnet, bscTestnet, sepolia],

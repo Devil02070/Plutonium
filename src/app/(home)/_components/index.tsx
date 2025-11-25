@@ -9,9 +9,11 @@ import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import Chat from "./Chat";
 import Grid from "./Grid";
 import Winners from "./Winners";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function HomePage() {
-    const [isChatSidebar, setIsChatSidebar] = useState(false)
+    const isMobile = useIsMobile()
+    const [isChatSidebar, setIsChatSidebar] = useState(true)
     const [loading, setLoading] = useState(false);
     const [chats, setChats] = useState<ChatData[]>([])
 
@@ -35,7 +37,7 @@ export default function HomePage() {
     useEffect(() => {
         // const chatHandler = (data: { data: ChatData }) => {
         const chatHandler = (data: ChatData[]) => {
-            console.log('newdata', data[0]);
+            // console.log('newdata', data[0]);
             setChats((prevChats) => [data[0], ...prevChats]);
         };
         socket.on(`chat`, chatHandler);
@@ -43,6 +45,12 @@ export default function HomePage() {
             socket.off(`chat`, chatHandler);
         };
     }, []);
+
+    useEffect(() => {
+        if (isMobile) {
+            setIsChatSidebar(false)
+        }
+    }, [isMobile])
 
 
     return (
@@ -80,7 +88,7 @@ export default function HomePage() {
             </div>
 
             <div className="col-span-2 md:h-[calc(100vh-120px)] pb-4 overflow-y-auto scrollbar-hide relative">
-                <div className="relative z-20">
+                <div className="relative z-20 max-w-2xl mx-auto">
                     <Grid />
                 </div>
                 <div className="lg:hidden mt-4 lg:mt-0 relative z-20">

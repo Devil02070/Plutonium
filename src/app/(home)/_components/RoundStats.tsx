@@ -11,11 +11,7 @@ import { useEffect, useState } from "react"
 interface RoundStatsProps {
     timer: number
 }
-interface Stats {
-    powerhouseBalance: string,
-    userDeposit: string,
-    overAllDeposit: string,
-}
+
 export default function RoundStats({ timer }: RoundStatsProps) {
     const { address } = useAppKitAccount()
     const { readContract } = useContract();
@@ -23,18 +19,12 @@ export default function RoundStats({ timer }: RoundStatsProps) {
     const [userDeposit, setUserDeposit] = useState(0)
     const [powerhouse, setPowerhouse] = useState(0)
 
-    // const [stats, setStats] = useState<Stats>({
-    //     powerhouseBalance: '0',
-    //     userDeposit: '0',
-    //     overAllDeposit: '0'
-    // })
-
     const getPowerhouseBalance = async () => {
         try {
             const amount = await readContract.powerHouseTokenBalance();
             // console.log('powerhouseBalance', amount)
             const formatted = amount
-                ? ethers.formatEther(amount)
+                ? ethers.utils.formatEther(amount)
                 : "0";
             // setStats({ ...stats, powerhouseBalance: formatted })
             setPowerhouse(Number(formatted))
@@ -49,7 +39,7 @@ export default function RoundStats({ timer }: RoundStatsProps) {
             const amount = await readContract.totalUserStake(address);
             // console.log('userDeposit', amount)
             const formatted = amount
-                ? ethers.formatEther(amount)
+                ? ethers.utils.formatEther(amount)
                 : "0";
             // setStats({ ...stats, userDeposit: formatted })
             setUserDeposit(Number(formatted))
@@ -63,19 +53,13 @@ export default function RoundStats({ timer }: RoundStatsProps) {
             const amount = await readContract.allOverStakeAmount();
             // console.log('OverALL Round Deposit', amount)
             const formatted = amount
-                ? ethers.formatEther(amount)
+                ? ethers.utils.formatEther(amount)
                 : "0";
             // setStats({ ...stats, userDeposit: formatted })
             setTotalDeposit(Number(formatted))
         } catch (err) {
             console.log("overall error", err);
         }
-    }
-
-     function formatTime(seconds: number) {
-        const m = Math.floor(seconds / 60);
-        const s = seconds % 60;
-        return `${m}:${s.toString().padStart(2, "0")}`;
     }
 
     useEffect(() => {

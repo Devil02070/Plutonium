@@ -1,3 +1,4 @@
+import { BigNumber } from "ethers"
 export interface ChatData {
     id: number,
     sender: string,
@@ -12,11 +13,12 @@ export interface ChatData {
 export interface EventData {
     block: number,
     users: string[],
-    amounts: number[],
-    plt: number[],
+    amounts: BigNumber[],
+    invested: BigNumber[],
+    plt: BigNumber[],
     one_plt_winner?: string,
-    powerhouse: number[],
-    one_plt_winner_amt: number,
+    powerhouse: BigNumber[],
+    one_plt_winner_amt: BigNumber,
 }
 
 export interface MiningData {

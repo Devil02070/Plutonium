@@ -1,5 +1,5 @@
 'use client'
-import { BrowserProvider, JsonRpcSigner } from "ethers";
+import { ethers } from "ethers";
 import { BackendUrl, CookieToken } from "@/utils/env";
 import Cookies from 'js-cookie';
 import { useAppKitAccount, useAppKitNetworkCore, useAppKitProvider, type Provider } from "@reown/appkit/react";
@@ -23,8 +23,8 @@ export const useWalletAuth = () => {
 
         try {
             // Create the provider and signer
-            const provider = new BrowserProvider(walletProvider, chainId);
-            const signer = new JsonRpcSigner(provider, address);
+            const provider = new ethers.providers.Web3Provider(walletProvider, chainId);
+            const signer = provider.getSigner();
 
             // Get nonce from backend
             const res = await backendApi.getNonce()

@@ -10,7 +10,7 @@ import { MdOutlineWallet } from "react-icons/md";
 import { motion } from 'framer-motion'
 import { toast } from "sonner";
 import useContract from "@/hooks/useContract";
-import { ethers, formatEther, parseEther } from "ethers";
+import { ethers} from "ethers";
 import { useAppKitAccount } from "@reown/appkit/react";
 
 interface Stats {
@@ -65,7 +65,7 @@ export default function Grid() {
             const amount = await readContract.powerHouseTokenBalance();
             console.log('powerhouseBalance', amount)
             const formatted = amount
-                ? ethers.formatEther(amount)
+                ? ethers.utils.formatEther(amount)
                 : "0";
             setStats({ ...stats, powerhouseBalance: formatted })
         } catch (err) {
@@ -78,7 +78,7 @@ export default function Grid() {
             const amount = await readContract.totalUserStake(address);
             console.log('userDeposit', amount)
             const formatted = amount
-                ? ethers.formatEther(amount)
+                ? ethers.utils.formatEther(amount)
                 : "0";
             setStats({ ...stats, userDeposit: formatted })
         } catch (err) {
@@ -109,7 +109,7 @@ export default function Grid() {
                 toast.error('selected blocks first')
                 return;
             };
-            const splitAmount = parseEther(amount.toString());
+            const splitAmount = ethers.utils.parseEther(amount.toString());
             const amountsPerBox = selectedIndexes.map(() => Number(splitAmount));
             console.log('selected blocks', selectedIndexes)
             console.log('amount blocks', amountsPerBox)

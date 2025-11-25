@@ -7,6 +7,7 @@ import { Button } from "./ui/button"
 import { useEffect, useState } from "react"
 import { EventData } from "@/utils/types"
 import { useAppKitAccount } from "@reown/appkit/react"
+import { BigNumber, ethers } from "ethers"
 
 interface WinnerModalProps {
     gameEndData: EventData
@@ -30,34 +31,38 @@ export default function WinnerModal({ gameEndData }: WinnerModalProps) {
 
         if (hasWinner) {
             setOpen(true)
-            const monReward = Number(gameEndData.amounts[winnerIndex])
-            console.log('monAmount', monReward)
-            setMonAmount(monReward)
+            const monReward = gameEndData.amounts[winnerIndex]
+            const formattedMonReward = ethers.utils.formatEther(`${monReward}`);
+            setMonAmount(Number(formattedMonReward));
 
             const isOnePltWinner = gameEndData.one_plt_winner;
-            console.log('onePltwinner', isOnePltWinner)
+            // console.log('onePltwinner', isOnePltWinner)
             const iscurrentUserPltWinner = isOnePltWinner === address;
-            console.log('iscurrentUserPltWinner', iscurrentUserPltWinner)
+            // console.log('iscurrentUserPltWinner', iscurrentUserPltWinner)
 
             const plt_splitSmount = gameEndData.plt[winnerIndex]
             if (iscurrentUserPltWinner) {
-                setPltAmount(gameEndData.one_plt_winner_amt)
+                const formattedPltAmount = ethers.utils.formatEther(`${gameEndData.one_plt_winner_amt}`);
+                setPltAmount(Number(formattedPltAmount))
                 setRarity('rare')
                 console.log('single amount', gameEndData.one_plt_winner_amt)
             } else {
-                if(plt_splitSmount){
-                    setPltAmount(plt_splitSmount)
+                if (plt_splitSmount) {
+                    const formattedPltSplitAmount = ethers.utils.formatEther(`${plt_splitSmount}`);
+                    setPltAmount(Number(formattedPltSplitAmount))
                     setRarity('rare')
                     console.log('split amount', gameEndData.plt[winnerIndex])
                 }
             }
-            
+
             const jackpotAmount = Number(gameEndData.powerhouse[winnerIndex] ?? 0);
             console.log('isjackpot', jackpotAmount)
             if (jackpotAmount > 0) {
                 setRarity('jackpot')
-                setPltAmount(pltAmount + jackpotAmount)
-                console.log('jackpot amount', pltAmount , jackpotAmount)
+                const total = pltAmount + jackpotAmount;
+                const formattedTotal = ethers.utils.formatEther(`${total}`);
+                setPltAmount(Number(formattedTotal))
+                console.log('jackpot amount', pltAmount, jackpotAmount)
             }
         }
     }, [gameEndData])
