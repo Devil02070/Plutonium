@@ -11,11 +11,13 @@ export default function Body() {
     const [mining, setMining] = useState<MiningData[]>([])
     const [powerhouse, setPowerhouse] = useState<MiningData[]>([])
 
+    // const [totalPages, setTotalPages] = useState(0)
+    // const [miningOffset, setMiningOffset] = useState(0)
+
     const getMiningData = useCallback(async () => {
         try {
             const res = await backendApi.getExploreMining();
             setMining(res.data.data)
-            console.log(res.data.data)
         } catch (error) {
             console.log(error)
         }
@@ -46,7 +48,7 @@ export default function Body() {
 
                 <MiningTable mining={mining} />
 
-                <PowerhouseTable powerhouse={powerhouse}/>
+                <PowerhouseTable powerhouse={powerhouse} />
 
                 <BuybackTable />
             </div>

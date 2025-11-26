@@ -13,6 +13,7 @@ import EmojiPicker, { Theme, type EmojiClickData, } from 'emoji-picker-react';
 import { BsEmojiSmile } from "react-icons/bs";
 import { useWalletAuth } from "@/hooks/useWalletAuth";
 import backendApi from "@/utils/backendApi";
+import { Spinner } from "@/components/ui/spinner";
 
 interface ChatProps {
     chats: ChatData[]
@@ -21,9 +22,9 @@ interface ChatProps {
 export default function Chat({ chats, loading }: ChatProps) {
     const { address } = useAppKitAccount()
     const { handleSignMsg } = useWalletAuth()
-
     const [content, setContent] = useState('')
     const [showPicker, setShowPicker] = useState(false);
+    const [isSending, setIsSending] = useState(false)
     const pickerRef = useRef<HTMLDivElement>(null);
     const onEmojiClick = (emojiObject: EmojiClickData) => {
         setContent((prev) => prev + emojiObject.emoji);
@@ -44,11 +45,14 @@ export default function Chat({ chats, loading }: ChatProps) {
             return;
         };
         try {
+            setIsSending(true)
             const res = await backendApi.sendChat(address, content)
             console.log(res);
             setContent('')
         } catch (error) {
             console.log(error)
+        } finally {
+            setIsSending(false)
         }
     }
     useEffect(() => {
@@ -60,7 +64,6 @@ export default function Chat({ chats, loading }: ChatProps) {
                 setShowPicker(false);
             }
         }
-
         if (showPicker) {
             document.addEventListener("mousedown", handleClickOutside);
         }
@@ -71,7 +74,8 @@ export default function Chat({ chats, loading }: ChatProps) {
     }, [showPicker]);
 
     return (
-        <div className="p-4 relative border-r border-dashed border-gray-30 h-[calc(100vh-60px)] md:h-[calc(100vh-135px)]">
+        // <div className="p-4 relative border-r border-dashed border-gray-30 h-[calc(100vh-60px)] md:h-[calc(100vh-135px)] border">
+        <div className="p-4 relative border-r border-dashed border-gray-30 h-[calc(100vh-60px)] md:h-[calc(100vh-90px)]">
             {chats.length === 0 ?
                 <div className="h-full space-y-4 pb-12 flex items-center justify-center">
                     <H2 className="text-gray-70 text-center">No Chats Yet.</H2>
@@ -84,7 +88,7 @@ export default function Chat({ chats, loading }: ChatProps) {
                                 <div key={i} className="space-y-2 w-full relative">
                                     <div className="flex items-center justify-between gap-2">
                                         <div className="flex items-center gap-2">
-                                            <div className="h-5 w-5 rounded-full bg-dark-blue"></div>
+                                            <div className="h-5 w-5 rounded-full chat-bg-grad"></div>
                                             <P12 className="text-gray-70 font-bold">{shortenAddress(chat.sender)}</P12>
                                         </div>
                                         <P12 className="text-gray-70 font-medium">{dayjs.unix(chat.ts).format("HH:mm A")}</P12>
@@ -97,7 +101,7 @@ export default function Chat({ chats, loading }: ChatProps) {
                 </div>
             }
 
-            <div className="h-fit absolute bottom-0 w-full left-0 bg-background px-4">
+            <div className="h-fit absolute bottom-0 w-full left-0 bg-background px-2 ps-0">
                 <div className="rounded p-2 flex items-center gap-2 bg-gray-30">
                     <div className="w-full">
                         <input
@@ -124,11 +128,12 @@ export default function Chat({ chats, loading }: ChatProps) {
                                 setShowPicker(prev => !prev);
                             }}
                             className="bg-transparent text-gray-70 border-0 px-0"
+                            disabled={isSending}
                         >
                             <BsEmojiSmile />
                         </Button>
-                        <Button size="sm" onClick={() => sendChatMessage()}>
-                            <IoSendOutline />
+                        <Button size="sm" onClick={() => sendChatMessage()} disabled={isSending}>
+                            {isSending ? <Spinner /> : <IoSendOutline />}
                         </Button>
                         {showPicker && (
                             <div ref={pickerRef} className="absolute bottom-12 right-0 z-50 shadow-lg">

@@ -141,3 +141,7 @@
   scrollbar-width: none;
   /* Firefox */
 }
+
+.chat-bg-grad{
+  background: linear-gradient(180deg, #F87E7E 0%, #FFF266 100%);
+}

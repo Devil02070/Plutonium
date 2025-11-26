@@ -4,10 +4,11 @@ import { H1, P12, P16 } from "./typography"
 import BorderEdges from "./BorderEdges"
 import Image from "next/image"
 import { Button } from "./ui/button"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { EventData } from "@/utils/types"
 import { useAppKitAccount } from "@reown/appkit/react"
-import { BigNumber, ethers } from "ethers"
+import { ethers } from "ethers"
+import { Confetti, ConfettiRef } from "./ui/confetti"
 
 interface WinnerModalProps {
     gameEndData: EventData
@@ -21,6 +22,7 @@ export default function WinnerModal({ gameEndData }: WinnerModalProps) {
     const [rarity, setRarity] = useState<'normal' | 'jackpot' | 'rare'>('normal')
 
     const [hasShown, setHasShown] = useState(false)
+    const confettiRef = useRef<ConfettiRef>(null)
 
     useEffect(() => {
         if (!gameEndData || !address) return;
@@ -34,6 +36,8 @@ export default function WinnerModal({ gameEndData }: WinnerModalProps) {
         if (hasWinner) {
             setHasShown(true);
             setOpen(true)
+            confettiRef.current?.fire({})
+
             const monReward = gameEndData.amounts[winnerIndex]
             const formattedMonReward = ethers.utils.formatEther(`${monReward}`);
             setMonAmount(Number(formattedMonReward));
@@ -78,6 +82,13 @@ export default function WinnerModal({ gameEndData }: WinnerModalProps) {
                     {rarity === 'rare' && <Rare monAmount={monAmount} pltAmount={pltAmount} />}
                     {rarity === 'jackpot' && <Jackpot monAmount={monAmount} pltAmount={pltAmount} />}
                     {rarity === 'normal' && <Normal monAmount={monAmount} />}
+                    <Confetti
+                        ref={confettiRef}
+                        className="absolute top-0 left-0 z-0 size-full"
+                    // onMouseEnter={() => {
+                    //     confettiRef.current?.fire({})
+                    // }}
+                    />
                 </BorderEdges>
             </DialogContent>
         </Dialog>

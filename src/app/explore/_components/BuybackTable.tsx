@@ -9,7 +9,7 @@ dayjs.extend(relativeTime)
 export default function BuybackTable() {
     const tableHeadings = ['Time', 'MON Spent', 'IGO Buried', 'Stake Yield']
     return (
-        <section className="max-w-6xl mx-auto px-4 space-y-6 mt-11">
+        <section className="max-w-6xl mx-auto px-4 space-y-6 mt-8 md:mt-11">
             <header className="space-y-1.5">
                 <H1 className="font-bold">Buy Back</H1>
                 <P14 className="text-gray-60">Review buyback transactions</P14>

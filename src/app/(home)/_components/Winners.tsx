@@ -29,7 +29,7 @@ export default function Winners() {
                 // After data is set, wait 10 seconds then clear it
                 clearDataTimeout = setTimeout(() => {
                     setGameEndData(undefined);
-                }, 60000);
+                }, 10000);
             }, 8000);
         };
         socket.on("minted", gamehandler);
@@ -40,7 +40,11 @@ export default function Winners() {
             clearTimeout(clearDataTimeout);
         };
     }, []);
-    if (!gameEndData) return;
+    if (!gameEndData){
+        return(
+            <H1 className="lg:text-end">Winners</H1>
+        )
+    };
     return (
         <>
             <H1 className="lg:text-end">Winners</H1>

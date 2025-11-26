@@ -1,6 +1,6 @@
 'use client'
 import BorderEdges from "@/components/BorderEdges";
-import { H3, P12, P14, P16 } from "@/components/typography";
+import { P12, P14, P16 } from "@/components/typography";
 import { Button } from "@/components/ui/button";
 import { formatTinyEth, handleKeyPress } from "@/lib/utils";
 import Image from "next/image";
@@ -144,7 +144,7 @@ export default function Grid() {
     useEffect(() => {
         if (endTimestamp && currentTimestamp) {
             const remaining_ts = Number(endTimestamp) - currentTimestamp;
-            console.log(Number(endTimestamp), currentTimestamp);
+            // console.log(Number(endTimestamp), currentTimestamp);
             console.log('Remaining time:', remaining_ts);
 
             if (remaining_ts > 0) {
@@ -186,7 +186,7 @@ export default function Grid() {
 
                 //get new game 
                 setGameStatus(false);
-            }, 8000);
+            }, 6000);
         }
     }, [gameEndData]);
 
@@ -254,7 +254,7 @@ export default function Grid() {
             <RoundStats timer={timer} />
 
             {/* Game */}
-            <div className="grid grid-cols-5 gap-1 lg:gap-2.5 h-fit mt-4">
+            <div className="grid grid-cols-5 gap-1 lg:gap-1.5 2xl:gap-2.5 h-fit mt-2 2xl:mt-4 max-w-xl 2xl:max-w-full mx-auto">
                 {Array.from({ length: 25 }).map((_, i) => {
                     const isSelected = selectedIndexes.includes(i);
                     const isWinner = winningIndex === i;
@@ -289,6 +289,16 @@ export default function Grid() {
                             onClick={() => toggleSelected(i)}
                         >
                             <BorderEdges key={i} padding={2} cornerThickness={6} cornerColor={`${edgesColor}`} cornerSize={1} className="w-full">
+                                <div className={`p-1 2xl:py-1.5 border cursor-pointer text-center space-y-0.5 md:space-y-2 2xl:space-y-2.5 ${bgColor} ${borderColor}`}>
+                                    <P14 className="text-dark-gray font-normal hidden md:block">#{i + 1}</P14>
+                                    <P12 className="text-dark-gray font-normal md:hidden">#{i + 1}</P12>
+                                    <P16 className="font-medium md:font-bold">{(Number(formatted) > 1000) ? `${(Number(formatted) / 1000).toFixed(2)}k` : formatTinyEth(Number(formatted))}</P16>
+                                    <P12 className={`flex items-center font-medium mx-auto w-fit gap-1 md:gap-2 py-0.5 px-1 md:p-1 rounded-[15px] bg-gray-20 text-gray-80`}>
+                                        <LuUserRound size={12} /> {users[i]}
+                                    </P12>
+                                </div>
+                            </BorderEdges>
+                            {/* <BorderEdges key={i} padding={2} cornerThickness={6} cornerColor={`${edgesColor}`} cornerSize={1} className="w-full">
                                 <div className={`p-1 md:p-2 border cursor-pointer text-center space-y-2.5 ${bgColor} ${borderColor}`}>
                                     <P14 className="text-dark-gray font-normal hidden md:block">#{i + 1}</P14>
                                     <P12 className="text-dark-gray font-normal md:hidden">#{i + 1}</P12>
@@ -297,21 +307,22 @@ export default function Grid() {
                                         <LuUserRound size={12} /> {users[i]}
                                     </P12>
                                 </div>
-                            </BorderEdges>
+                            </BorderEdges> */}
                         </motion.div>
                     );
                 })}
             </div>
+            
 
 
             {/* Inputs */}
-            <div className="space-y-4 mt-4">
+            <div className="space-y-2 2xl:space-y-4 mt-2 2xl:mt-4">
                 <div className="flex items-center gap-3.5 w-full">
-                    <div className="flex items-center gap-4 border-[1.5px] border-gray-40 px-4 py-2 w-full bg-background">
+                    <div className="flex items-center gap-4 border-[1.5px] border-gray-40 px-4 py-2 lg:py-1 2xl:py-2 w-full bg-background">
                         <input
                             type="text"
                             placeholder="0.00"
-                            className="text-2xl font-bold w-full focus:outline-none "
+                            className="text-xl md:text-2xl font-bold w-full focus:outline-none "
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             inputMode="decimal"
@@ -319,7 +330,7 @@ export default function Grid() {
                         />
                         <div className="flex items-center gap-1">
                             <MdOutlineWallet size={30} />
-                            <P14 className="font-semibold">{balance.toFixed(6)}</P14>
+                            <P14 className="font-semibold">{balance.toFixed(2)}</P14>
                             <Image src="/media/token.svg" alt="logo" height={16} width={16} className="rounded-full" />
                         </div>
                     </div>
@@ -327,15 +338,14 @@ export default function Grid() {
                         <Button
                             onClick={() => handleDeposit()}
                             disabled={!amount || selectedIndexes.length === 0 || timer === 0}
+                            className="z-50"
                         >
-                            {
-                                isDepositing ? <Spinner /> : 'Deposit'
-                            }
+                            {isDepositing ? <Spinner /> : 'Deposit'}
                         </Button>
                     </BorderEdges>
                 </div>
                 <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-4 w-full">
-                    {["0.001","1", "10", "100", '1000', '10000'].map((val) => (
+                    {["0.001", "1", "10", "100", '1000', '10000'].map((val) => (
                         <Button
                             key={val}
                             variant="outline"
@@ -346,7 +356,6 @@ export default function Grid() {
                             +{Number(val)}
                         </Button>
                     ))}
-
                 </div>
 
                 <div className="bg-[#1A1A1A] rounded px-3 py-3.5 space-y-4">

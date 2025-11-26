@@ -6,15 +6,16 @@ import WalletButton from "./WalletButton"
 import { navitems } from "@/utils/constants"
 import { FiBox } from "react-icons/fi"
 import Logo from "./Logo"
+import { CoolMode } from "../ui/cool-mode"
 
 export default function Header() {
     const pathname = usePathname()
     return (
-        <header className="py-3 pb-0 md:pb-3 px-4">
+        <header className="py-2 px-4">
             <div className="flex justify-between items-center">
                 <Logo />
                 <nav className="hidden sm:block">
-                    <ul className="flex items-center gap-4 2xl:gap-8">
+                    <ul className="flex items-center gap-4 xl:gap-8">
                         {
                             navitems.map((item, i) => {
                                 const isActive = pathname === item.url;
@@ -28,7 +29,14 @@ export default function Header() {
                     </ul>
                 </nav>
                 <div className="flex items-center gap-4">
-                    <Button variant="outline" className="border-primary hidden md:flex">Buy PLT</Button>
+                    <CoolMode
+                        options={{
+                            particle:"/media/logo-icon.svg",
+                            speedUp:4,
+                        }}
+                    >
+                        <Button variant="outline" className="border-primary hidden md:flex">Buy PLT</Button>
+                    </CoolMode>
                     <WalletButton />
                 </div>
 

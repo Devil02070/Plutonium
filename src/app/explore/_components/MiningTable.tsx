@@ -6,6 +6,7 @@ import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { MiningData } from "@/utils/types";
 import BorderEdges from "@/components/BorderEdges";
+import { ethers } from "ethers";
 dayjs.extend(relativeTime)
 
 type MiningTableProps = {
@@ -14,7 +15,7 @@ type MiningTableProps = {
 export default function MiningTable({ mining }: MiningTableProps) {
     const tableHeadings = ['Users', 'Box', 'Token Winner', 'Winners', 'Deposit', 'Vaulted', 'Winnings', 'Powerhouse', 'Time']
     return (
-        <section className="max-w-6xl mx-auto px-4 space-y-6 mt-11">
+        <section className="max-w-6xl mx-auto px-4 space-y-6 mt-8 md:mt-11">
             <header className="space-y-1.5">
                 <H1 className="font-bold">Mining</H1>
                 <P14 className="text-gray-60">Recent mining activity</P14>
@@ -44,6 +45,10 @@ export default function MiningTable({ mining }: MiningTableProps) {
                         <TableBody>
                             {
                                 mining.map((item, i) => {
+                                    const depositAmount = Number(ethers.utils.formatEther(`${item.deposit}`)).toFixed(3)
+                                    const winningAmount = Number(ethers.utils.formatEther(`${item.winnings}`)).toFixed(3)
+                                    const vaulted = Number(ethers.utils.formatEther(`${item.vaulted}`)).toFixed(3)
+                                    const powerHouse = Number(ethers.utils.formatEther(`${item.powerhouse}`)).toFixed(3)
                                     return (
                                         <TableRow key={i}>
                                             <TableCell>
@@ -61,19 +66,20 @@ export default function MiningTable({ mining }: MiningTableProps) {
                                             <TableCell>
                                                 <div className="flex items-center gap-1 justify-center px-2">
                                                     <Image src="/media/token.svg" alt="logo" height={16} width={16} className="rounded-full" />
-                                                    <P12 className="font-bold">{item.deposit}</P12>
+                                                    {/* <P12 className="font-bold">{item.deposit}</P12> */}
+                                                    <P12 className="font-bold">{depositAmount}</P12>
                                                 </div>
                                             </TableCell>
                                             <TableCell>
                                                 <div className="flex items-center gap-1 justify-center px-2">
                                                     <Image src="/media/token.svg" alt="logo" height={16} width={16} className="rounded-full" />
-                                                    <P12 className="font-bold">{item.vaulted}</P12>
+                                                    <P12 className="font-bold">{vaulted}</P12>
                                                 </div>
                                             </TableCell>
                                             <TableCell>
                                                 <div className="flex items-center gap-1 justify-center px-2">
                                                     <Image src="/media/token.svg" alt="logo" height={16} width={16} className="rounded-full" />
-                                                    <P12 className="font-bold">{item.winnings}</P12>
+                                                    <P12 className="font-bold">{winningAmount}</P12>
                                                 </div>
                                             </TableCell>
                                             <TableCell className="text-center">
@@ -81,7 +87,7 @@ export default function MiningTable({ mining }: MiningTableProps) {
                                                     item.powerhouse ?
                                                         <div className="flex items-center gap-2 justify-center">
                                                             <Image src="/media/logo-icon.svg" alt="logo" height={20} width={20} className="rounded-full" />
-                                                            <P12 className="font-bold">{item.powerhouse}</P12>
+                                                            <P12 className="font-bold">{powerHouse}</P12>
                                                         </div>
                                                         :
                                                         <P12 className="font-bold">-</P12>
